@@ -28,9 +28,8 @@ app.use((req, res, next) => {
 });
 
 const corsOptions = {
-  origin: 'https://port8080-workspaces-ws-5lzr6.us10.trial.applicationstudio.cloud.sap',  // Allow specific origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Allowed headers
+  origin: '*',  // Allow specific origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE']  // Allowed headers
 };
 
 // Apply CORS middleware
