@@ -1,149 +1,225 @@
 const express = require('express');
+
 const mongoose = require('mongoose');
+
 const bodyParser = require('body-parser');
-// const userRoutes = require('./routes/userRoutes'); 
+
+const cors = require('cors');
+
 const User = require('./model/User');
-const cors = require('cors'); 
-const punchHistory = require('./model/PunchHistory');
 
+const PunchHistory = require('./model/PunchHistory');
+ 
 const app = express();
-// const corsOptions = {
-//   origin: '*',  // Replace with your frontend domain or URL
-//   methods: ['GET', 'POST', 'DELETE'],  // Specify allowed HTTP methods
-//   allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
-// };
+ 
+// Enable CORS with proper headers
 
-// app.use(cors(corsOptions));  // Use the customized CORS options
-// app.options('*', cors()); 
-app.use(cors({
-  "origin":"*"
-}));
-app.use(express.json()); // Set the desired limit, e.g., 50MB
-// app.use(express.urlencoded({extended: true }));
+app.use(cors());
 
-// app.use(cors());
+app.use((req, res, next) => {
+
+    res.header("Access-Control-Allow-Origin", "*");
+
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+    if (req.method === "OPTIONS") {
+
+        return res.status(200).end();
+
+    }
+
+    next();
+
+});
+ 
+app.use(express.json());
+
 app.use(bodyParser.json());
-
+ 
 mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net')
-  .then(() => console.log('MongoDB Connected...'))
-  .catch((err) => console.log('MongoDB connection error: ' + err));
 
-// app.use('/api', userRoutes); 
+    .then(() => console.log('MongoDB Connected...'))
 
+    .catch((err) => console.log('MongoDB connection error: ' + err));
+ 
+// Punch History Routes
 
 app.get('/PunchHistory', async (req, res) => {
-  try {
-    const users = await punchHistory.find();  
-    res.json(users); 
-  } catch (error) {
-    res.status(500).json({ error: error.message }); 
-  }
-});
 
-app.post('/PunchHistory', async (req, res) => {
-  const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+    try {
 
-  try {
-    const newUser = new punchHistory({ date, punchIn, punchOut, Inaddress, Outaddress});
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+        const punchRecords = await PunchHistory.find();
 
+        res.json(punchRecords);
 
+    } catch (error) {
 
-app.delete('/PunchHistory/:date', async (req, res) => {
-  try {
-    const deletedUser = await punchHistory.findByIdAndDelete(req.params.date);
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'Punch not found' });
+        res.status(500).json({ error: error.message });
+
     }
-    res.status(200).json({ message: 'Punch deleted' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+
 });
+ 
+app.post('/PunchHistory', async (req, res) => {
 
+    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
+    try {
 
+        const newPunch = new PunchHistory({ date, punchIn, punchOut, Inaddress, Outaddress });
 
+        await newPunch.save();
 
+        res.status(201).json(newPunch);
 
+    } catch (error) {
 
+        res.status(500).json({ error: error.message });
 
+    }
 
+});
+ 
+app.delete('/PunchHistory/:id', async (req, res) => {
 
+    try {
 
+        const deletedPunch = await PunchHistory.findByIdAndDelete(req.params.id);
 
+        if (!deletedPunch) {
 
-app.get('/', (req, res) => {
-    res.send('Hello, welcome to the API!');
-  });
+            return res.status(404).json({ message: 'Punch record not found' });
+
+        }
+
+        res.status(200).json({ message: 'Punch record deleted' });
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
+    }
+
+});
+ 
+// User Routes
 
 app.get('/users', async (req, res) => {
-  try {
-    const users = await User.find();  
-    res.json(users); 
-  } catch (error) {
-    res.status(500).json({ error: error.message }); 
-  }
-});
 
-app.put('/users/:id', async (req, res) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
+    try {
+
+        const users = await User.find();
+
+        res.json(users);
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
     }
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
+});
+ 
 app.get('/users/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
+    try {
+
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+
+            return res.status(404).json({ message: 'User not found' });
+
+        }
+
+        res.status(200).json(user);
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
+    }
+
+});
+ 
 app.post('/users', async (req, res) => {
-  const { name, email, age } = req.body;
 
-  try {
-    const newUser = new User({ name, email, age });
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+    const { name, email, age } = req.body;
 
-app.delete('/users/:id', async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    if (!deletedUser) {
-      return res.status(404).json({ message: 'User not found' });
+    try {
+
+        const newUser = new User({ name, email, age });
+
+        await newUser.save();
+
+        res.status(201).json(newUser);
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
     }
-    res.status(200).json({ message: 'User deleted' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+
+});
+ 
+app.put('/users/:id', async (req, res) => {
+
+    try {
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+        if (!updatedUser) {
+
+            return res.status(404).json({ message: 'User not found' });
+
+        }
+
+        res.status(200).json(updatedUser);
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
+    }
+
+});
+ 
+app.delete('/users/:id', async (req, res) => {
+
+    try {
+
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+        if (!deletedUser) {
+
+            return res.status(404).json({ message: 'User not found' });
+
+        }
+
+        res.status(200).json({ message: 'User deleted' });
+
+    } catch (error) {
+
+        res.status(500).json({ error: error.message });
+
+    }
+
+});
+ 
+app.get('/', (req, res) => {
+
+    res.send('Hello, welcome to the API!');
+
+});
+ 
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+
+    console.log(`Server is running on http://localhost:${PORT}`);
+
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+ 
