@@ -28,10 +28,7 @@ const app = express();
 // });
 
 app.use(cors({
-  origin: '*', // Your frontend origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,  
+  origin: '*', 
 }));
 // const corsOptions = {
 //   origin: '*',  // Allow specific origin
