@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const PunchHistory = require('../models/PunchHistory'); // Assuming model is in models folder
+const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
