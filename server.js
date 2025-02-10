@@ -18,17 +18,14 @@ app.use(cors());
 
 // Example for Vercel serverless functions
 
-module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');  // Frontend URL
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT')
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();  // Handle preflight request
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+  if (req.method === "OPTIONS") {
+      return res.status(200).end();
   }
-
-  // Your actual route handling
-  res.status(200).json({ message: 'Punch history data' });
-};
+  next();
+});
 
  
 app.use(express.json());
