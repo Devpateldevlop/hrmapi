@@ -7,7 +7,15 @@ const cors = require('cors');
 const punchHistory = require('./model/PunchHistory');
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: 'http://your-frontend-domain.com',  // Replace with your frontend domain or URL
+  methods: ['GET', 'POST', 'DELETE'],  // Specify allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
+};
+
+app.use(cors(corsOptions));  // Use the customized CORS options
+
+// app.use(cors());
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net')
@@ -40,6 +48,17 @@ app.post('/PunchHistory', async (req, res) => {
 
 
 
+app.delete('/PunchHistory/:date', async (req, res) => {
+  try {
+    const deletedUser = await punchHistory.findByIdAndDelete(req.params.date);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'Punch not found' });
+    }
+    res.status(200).json({ message: 'Punch deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 
 
