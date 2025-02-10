@@ -39,7 +39,7 @@ app.use(cors(corsOptions));
 module.exports = async (req, res) => {
   // Handle CORS preflight (OPTIONS) requests
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', 'https://port8080-workspaces-ws-5lzr6.us10.trial.applicationstudio.cloud.sap');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     return res.status(200).end();
