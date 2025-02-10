@@ -14,7 +14,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));  // Use the customized CORS options
-
+app.options('*', cors()); 
 // app.use(cors());
 app.use(bodyParser.json());
 
