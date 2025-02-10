@@ -7,14 +7,20 @@ const cors = require('cors');
 const punchHistory = require('./model/PunchHistory');
 
 const app = express();
-const corsOptions = {
-  origin: '*',  // Replace with your frontend domain or URL
-  methods: ['GET', 'POST', 'DELETE'],  // Specify allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
-};
+// const corsOptions = {
+//   origin: '*',  // Replace with your frontend domain or URL
+//   methods: ['GET', 'POST', 'DELETE'],  // Specify allowed HTTP methods
+//   allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
+// };
 
-app.use(cors(corsOptions));  // Use the customized CORS options
-app.options('*', cors()); 
+// app.use(cors(corsOptions));  // Use the customized CORS options
+// app.options('*', cors()); 
+app.use(cors({
+  "origin":"*"
+}));
+app.use(express.json()); // Set the desired limit, e.g., 50MB
+// app.use(express.urlencoded({extended: true }));
+
 // app.use(cors());
 app.use(bodyParser.json());
 
