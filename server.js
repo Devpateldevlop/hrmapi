@@ -18,22 +18,28 @@ const app = express();
 
 // Example for Vercel serverless functions
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-  if (req.method === "OPTIONS") {
-      return res.status(200).end();
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+//   if (req.method === "OPTIONS") {
+//       return res.status(200).end();
+//   }
+//   next();
+// });
 
-const corsOptions = {
-  origin: '*',  // Allow specific origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE']  // Allowed headers
-};
+app.use(cors({
+  origin: '*', // Your frontend origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,  
+}));
+// const corsOptions = {
+//   origin: '*',  // Allow specific origin
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']  // Allowed headers
+// };
 
-// Apply CORS middleware
-app.use(cors(corsOptions));
+// // Apply CORS middleware
+// app.use(cors(corsOptions));
 
 // module.exports = async (req, res) => {
 //   // Handle CORS preflight (OPTIONS) requests
