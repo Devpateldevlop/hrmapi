@@ -11,6 +11,8 @@ const User = require('./model/User');
 const PunchHistory = require('./model/PunchHistory');
  
 const app = express();
+
+const port = process.env.PORT || 8080;
  
 mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net')
 
@@ -37,9 +39,13 @@ app.use(bodyParser.json());
 //   next();
 // });
 
-app.use(cors({
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+const corsOptions = {
   origin: '*', 
-}));
+  methods: 'GET,POST,PUT,DELETE'
+};
+
 // const corsOptions = {
 //   origin: '*',  // Allow specific origin
 //   methods: ['GET', 'POST', 'PUT', 'DELETE']  // Allowed headers
