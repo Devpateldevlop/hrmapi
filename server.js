@@ -12,7 +12,17 @@ const PunchHistory = require('./model/PunchHistory');
  
 const app = express();
  
+mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net')
+
+    .then(() => console.log('MongoDB Connected...'))
+
+    .catch((err) => console.log('MongoDB connection error: ' + err));
 // Enable CORS with proper headers
+ 
+app.use(express.json());
+
+app.use(bodyParser.json());
+ 
 
 // app.use(cors());
 
@@ -50,16 +60,8 @@ app.use(cors({
 //   // Handle actual request (GET, POST, etc.)
 //   await app(req, res);
 // };
- 
-app.use(express.json());
 
-app.use(bodyParser.json());
- 
-mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net')
 
-    .then(() => console.log('MongoDB Connected...'))
-
-    .catch((err) => console.log('MongoDB connection error: ' + err));
  
 // Punch History Routes
 
