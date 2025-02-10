@@ -8,7 +8,7 @@ const punchHistory = require('./model/PunchHistory');
 
 const app = express();
 const corsOptions = {
-  origin: 'http://your-frontend-domain.com',  // Replace with your frontend domain or URL
+  origin: '*',  // Replace with your frontend domain or URL
   methods: ['GET', 'POST', 'DELETE'],  // Specify allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'],  // Specify allowed headers
 };
