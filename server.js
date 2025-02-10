@@ -14,7 +14,7 @@ const app = express();
  
 // Enable CORS with proper headers
 
-app.use(cors());
+// app.use(cors());
 
 // Example for Vercel serverless functions
 
@@ -35,18 +35,18 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-module.exports = async (req, res) => {
-  // Handle CORS preflight (OPTIONS) requests
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return res.status(200).end();
-  }
+// module.exports = async (req, res) => {
+//   // Handle CORS preflight (OPTIONS) requests
+//   if (req.method === 'OPTIONS') {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//     return res.status(200).end();
+//   }
 
-  // Handle actual request (GET, POST, etc.)
-  await app(req, res);
-};
+//   // Handle actual request (GET, POST, etc.)
+//   await app(req, res);
+// };
  
 app.use(express.json());
 
