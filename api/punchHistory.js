@@ -33,6 +33,9 @@ app.get('/api/punchHistory', async (req, res) => {
 });
 
 app.post('/api/punchHistory', async (req, res) => {
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end(); // Handle preflight
+      }
     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
     // Validate the incoming data (check if all necessary fields are present)
