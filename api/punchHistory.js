@@ -4,9 +4,8 @@ const PunchHistory = require('../model/PunchHistory'); // Assuming model is in m
 const cors = require('cors');
 const app = express();
 
-
 app.use(cors({
-    origin: '*', // Your frontend domain
+    origin: '*', // Allow all domains or restrict to your frontend's domain
     methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
@@ -14,128 +13,64 @@ app.options('*', cors()); // This handles preflight requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  });
+})
+.then(() => console.log('MongoDB Connected...'))
+.catch((err) => console.log('MongoDB connection error: ' + err));
 
-
+// Handle GET request for punch history
 app.get('/api/punchHistory', async (req, res) => {
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end(); // Handle preflight
-      }
     try {
         const punchHistories = await PunchHistory.find();
-        res.status(200).json(punchHistories);
-      } catch (err) {
+        res.status(200).json(punchHistories); // Send retrieved data back
+    } catch (err) {
         res.status(500).json({ error: 'Error retrieving punch history' });
-      }
+    }
 });
 
-// app.post('/api/punchHistory', async (req, res) => {
-//     if (req.method === 'OPTIONS') {
-//         return res.status(200).end(); // Handle preflight
-//       }
-//     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+// Handle POST request to create new punch history
+app.post('/api/punchHistory', async (req, res) => {
+    // Destructure request body
+    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
-//     // Validate the incoming data (check if all necessary fields are present)
-//     if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-//         return res.status(400).json({ error: 'All fields are required' });
-//     }
-
-//     try {
-//         // Create a new record in the database
-//         const newPunchRecord = await PunchHistory.create({
-//             date, punchIn, punchOut, Inaddress, Outaddress,
-//         });
-
-//         // Return the created record
-//         res.status(201).json({
-//             message: 'Punch history created successfully',
-//             data: newPunchRecord,
-//         });
-//     } catch (err) {
-//         console.error('Error saving punch history:', err);
-//         res.status(500).json({ error: 'Error saving punch history' });
-//     }
-// });
-
-
-module.exports = async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Adjust the CORS origin
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-    if (req.method === 'OPTIONS') {
-      return res.status(200).end(); // Handle preflight request
+    // Validate the incoming data (ensure all fields are provided)
+    if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+        return res.status(400).json({ error: 'All fields are required' });
     }
-  
-    if (req.method === 'POST') {
-      const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
-  
-      try {
-        const newPunchRecord = new PunchHistory.create({
+
+    try {
+        // Create a new punch record
+        const newPunchRecord = new PunchHistory({
             date, punchIn, punchOut, Inaddress, Outaddress
         });
-  
-        // await newPunchRecord.save(); // Save data to MongoDB
-        res.status(201).json({ message: 'Punch history created', data: newPunchRecord });
-      } catch (err) {
-        res.status(500).json({ error: 'Error saving punch history' });
-      }
-    } else if (req.method === 'GET') {
-      try {
-        const punchHistories = await PunchHistory.find();
-        res.status(200).json(punchHistories);
-      } catch (err) {
-        res.status(500).json({ error: 'Error retrieving punch history' });
-      }
-    } else {
-      res.status(405).json({ error: 'Method Not Allowed' });
-    }
-  };
-  
-const PORT = process.env.PORT || 3000;
 
+        // Save the record to MongoDB
+        await newPunchRecord.save();
+        
+        // Return the created record as the response
+        res.status(201).json({
+            message: 'Punch history created successfully',
+            data: newPunchRecord,
+        });
+    } catch (err) {
+        console.error('Error saving punch history:', err);
+        res.status(500).json({ error: 'Error saving punch history' });
+    }
+});
+
+// Handle OPTIONS requests for CORS preflight
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.status(200).end();
+});
+
+// Set up the server to listen on the specified port
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
