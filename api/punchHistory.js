@@ -55,7 +55,7 @@ module.exports = async (req, res) => {
     }
   
     if (req.method === 'POST') {
-      const { date, punchIn, punchOut,Inaddress,Outaddress } = req.body;
+      const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
   
       try {
         const newPunchRecord = new PunchHistory({
