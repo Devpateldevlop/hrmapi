@@ -10,6 +10,7 @@ app.use(cors({
     methods: ['GET', 'POST'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
+app.options('*', cors()); // This handles preflight requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
