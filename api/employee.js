@@ -34,7 +34,15 @@ app.post('/api/employee', async (req, res) => {
     }
   });
   
+  app.get('/api/employee', async (req, res) => {
+    try {
+        const punchHistories = await Employee.find();
+        res.status(200).json(punchHistories); // Send retrieved data back
+    } catch (err) {
+        res.status(500).json({ error: 'Error retrieving punch history' });
+    }
 
+  });
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
