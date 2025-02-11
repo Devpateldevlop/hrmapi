@@ -7,6 +7,10 @@ mongoose.connect('mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
     .catch((err) => console.log('MongoDB connection error: ' + err));
     const PunchHistory=require("./model/PunchHistory.js")
 
+    mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB Connected...'))
+    .catch((err) => console.log('MongoDB connection error: ' + err));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({orgin:'*'}));
