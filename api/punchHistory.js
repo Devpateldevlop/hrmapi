@@ -20,10 +20,10 @@ mongoose.connect(process.env.MONGODB_URI, {
   });
 
 
-app.get('/api/punchHistory', async (req, res) => {
+// app.get('/api/punchHistory', async (req, res) => {
   
-  res.json({ message: 'Punch History Data' });
-});
+//   res.json({ message: 'Punch History Data' });
+// });
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your frontend URL
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST'); // Allowed HTTP methods
