@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors({
     origin: '*', // Your frontend domain
-    methods: ['GET', 'POST'], // Allowed HTTP methods
+    methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
 app.options('*', cors()); // This handles preflight requests
@@ -18,13 +18,11 @@ mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-app.get('/PunchHistory', async (req, res) => {
-    try {
-        const punchRecords = await PunchHistory.find();
-        res.json(punchRecords);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+
+
+app.get('/api/punchHistory', async (req, res) => {
+  
+  res.json({ message: 'Punch History Data' });
 });
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your frontend URL
