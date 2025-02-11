@@ -21,7 +21,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 
 app.get('/api/punchHistory', async (req, res) => {
-  
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end(); // Handle preflight
+      }
     try {
         const punchHistories = await PunchHistory.find();
         res.status(200).json(punchHistories);
@@ -30,6 +32,8 @@ app.get('/api/punchHistory', async (req, res) => {
       }
 });
 module.exports = async (req, res) => {
+  
+
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your frontend URL
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST','OPTIONS'); // Allowed HTTP methods
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Allowed headers
@@ -43,6 +47,10 @@ module.exports = async (req, res) => {
     }
   } else {
     res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end(); // Handle preflight
   }
 };
 const PORT = process.env.PORT || 3000;
