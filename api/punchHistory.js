@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
+const express = require('express');
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
