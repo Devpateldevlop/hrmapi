@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const PunchHistory = require('../model/Payslip'); // Assuming model is in models folder
+const Payslip = require('../model/Payslip'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
 
@@ -26,7 +26,7 @@ app.post('/api/employee/:empcode/payslip', async (req, res) => {
     const { month, basicSalary, bonus, deductions, netSalary, paidDate } = req.body;
   
     try {
-      const employee = await Employee.findOne({ Empcode: empcode });
+      const employee = await Payslip.findOne({ Empcode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   

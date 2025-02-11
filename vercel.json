@@ -21,7 +21,7 @@
     },
     {
       "src": "/api/employee/:empcode/payslip",
-      "dest": "/api/employee.js"
+      "dest": "/api/payslip.js"
     },
     {
       "src": "/api/employee/:empcode/leavehistory",

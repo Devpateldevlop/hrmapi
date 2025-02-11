@@ -42,15 +42,14 @@ app.post('/api/punchHistory', async (req, res) => {
     }
 
     try {
-        // Create a new punch record
         const newPunchRecord = new PunchHistory({
             date, punchIn, punchOut, Inaddress, Outaddress
         });
 
-        // Save the record to MongoDB
+       
         await newPunchRecord.save();
         
-        // Return the created record as the response
+       
         res.status(201).json({
             message: 'Punch history created successfully',
             data: newPunchRecord,
@@ -61,6 +60,27 @@ app.post('/api/punchHistory', async (req, res) => {
     }
 });
 
+app.post('/api/employee/:empcode/punchHistory', async (req, res) => {
+    const { empcode } = req.params;
+    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+  
+    try {
+      const employee = await PunchHistory.findOne({ Empcode: empcode });
+  
+      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+  
+      const newPunchHistory = new PunchHistory({ date, punchIn, punchOut, Inaddress, Outaddress, employee: employee._id });
+      await newPunchHistory.save();
+  
+      employee.punchHistory.push(newPunchHistory);
+      await employee.save();
+  
+      res.status(201).json({ message: 'PunchHistory added successfully', data: newPunchHistory });
+    } catch (err) {
+      res.status(500).json({ error: 'Error adding PunchHistory' });
+    }
+  });
+  
 // Handle OPTIONS requests for CORS preflight
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

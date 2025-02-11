@@ -23,10 +23,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 
 app.post('/api/employee', async (req, res) => {
-    const { Empcode, profile } = req.body;
+    const { EmployeeCode, profile } = req.body;
   
     try {
-      const newEmployee = new Employee({ Empcode, profile });
+      const newEmployee = new Employee({ EmployeeCode, profile });
       await newEmployee.save();
       res.status(201).json({ message: 'Employee created successfully', data: newEmployee });
     } catch (err) {

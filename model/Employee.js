@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb.net", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -15,15 +16,30 @@ const AddressSchema = new mongoose.Schema({
 });
 
 const EmployeeSchema = new mongoose.Schema({
-    Empcode: { type: Number, required: true, unique: true },
+    EmployeeCode: { type: Number, required: true, unique: true },
     profile: {
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
-        email: { type: String, required: true },
-        phone: { type: String, required: true },
+        Email: { type: String, required: true },
+        MobileNumber: { type: String, required: true },
         department: { type: String, required: true },
         role: { type: String, required: true },
         hireDate: { type: Date, required: true },
+        designation:{type:String},
+        DateOfBirth:{type:String},
+        PANNumber:{type:String},
+        AadhaarNumber:{type:String},
+        Designation:{type:String},
+        Department:{type:String},
+        Branch:{type:String},
+        Grade:{type:String},
+        DateofJoining:{type:String},
+        DateofConfirmation:{type:String},
+        ReportingManager:{type:String},
+        ApprovingManager:{type:String},
+        BankName:{type:String},
+        BankAccountNumber:{type:String},
+        BankIFSCCode:{type:String},
         salary: { type: Number, required: true },
         address: AddressSchema,
         profileImage: { type: String }
