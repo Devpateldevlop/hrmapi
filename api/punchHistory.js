@@ -58,7 +58,7 @@ module.exports = async (req, res) => {
       const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
   
       try {
-        const newPunchRecord = new PunchHistory({
+        const newPunchRecord = new PunchHistory.create({
             date, punchIn, punchOut, Inaddress, Outaddress
         });
   
