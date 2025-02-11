@@ -8,24 +8,23 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 // Define the Address Schema for employee
-const AddressSchema = new mongoose.Schema({
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zip: { type: String, required: true }
-});
+// const AddressSchema = new mongoose.Schema({
+//     street: { type: String, required: true },
+//     city: { type: String, required: true },
+//     state: { type: String, required: true },
+//     zip: { type: String, required: true }
+// });
 
 const EmployeeSchema = new mongoose.Schema({
     EmployeeCode: { type: Number, required: true, unique: true },
     profile: {
         firstName: { type: String, required: true },
+        Password:{type:String,required:true},
         lastName: { type: String, required: true },
         Email: { type: String, required: true },
         MobileNumber: { type: String, required: true },
-        department: { type: String, required: true },
         role: { type: String, required: true },
         hireDate: { type: Date, required: true },
-        designation:{type:String},
         DateOfBirth:{type:String},
         PANNumber:{type:String},
         AadhaarNumber:{type:String},
@@ -41,7 +40,8 @@ const EmployeeSchema = new mongoose.Schema({
         BankAccountNumber:{type:String},
         BankIFSCCode:{type:String},
         salary: { type: Number, required: true },
-        address: AddressSchema,
+        LocalAddress:{type:String},
+        PermanentAddress:{type:String},
         profileImage: { type: String }
     },
     punchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PunchHistory' }],
