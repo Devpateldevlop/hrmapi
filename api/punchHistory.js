@@ -5,20 +5,18 @@ const cors = require('cors');
 const app = express();
 
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-
 app.use(cors({
-    origin: 'https://port8080-workspaces-ws-5lzr6.us10.trial.applicationstudio.cloud.sap', // Your frontend domain
+    origin: '*', // Your frontend domain
     methods: ['GET', 'POST'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 app.get('/PunchHistory', async (req, res) => {
     try {
         const punchRecords = await PunchHistory.find();
