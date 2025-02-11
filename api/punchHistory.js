@@ -13,6 +13,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({orgin:'*'}));
+
 module.exports = async (req, res) => {
   if (req.method === 'GET') {
     try {
