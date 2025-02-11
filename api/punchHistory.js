@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const PunchHistory = require('../model/PunchHistory');
 const connectToMongoDB = async () => {
   const uri = process.env.MONGO_URI;
   if (mongoose.connections[0].readyState) {
@@ -14,11 +14,16 @@ const connectToMongoDB = async () => {
     console.error("MongoDB connection error:", err);
   }
 };
-
 module.exports = async (req, res) => {
-  // Connect to MongoDB
-  await connectToMongoDB();
-
-  // Example response
-  res.status(200).json({ message: "Hello from Node.js API!" });
-};
+    if (req.method === 'GET') {
+      try {
+        const punchHistories = await PunchHistory.find();
+        res.status(200).json(punchHistories);
+      } catch (err) {
+        res.status(500).json({ error: 'Error retrieving punch history' });
+      }
+    } else {
+      res.status(405).json({ error: 'Method Not Allowed' });
+    }
+  };
+  
