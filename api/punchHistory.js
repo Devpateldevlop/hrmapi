@@ -32,33 +32,33 @@ app.get('/api/punchHistory', async (req, res) => {
       }
 });
 
-app.post('/api/punchHistory', async (req, res) => {
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end(); // Handle preflight
-      }
-    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+// app.post('/api/punchHistory', async (req, res) => {
+//     if (req.method === 'OPTIONS') {
+//         return res.status(200).end(); // Handle preflight
+//       }
+//     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
-    // Validate the incoming data (check if all necessary fields are present)
-    if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
+//     // Validate the incoming data (check if all necessary fields are present)
+//     if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+//         return res.status(400).json({ error: 'All fields are required' });
+//     }
 
-    try {
-        // Create a new record in the database
-        const newPunchRecord = await PunchHistory.create({
-            date, punchIn, punchOut, Inaddress, Outaddress,
-        });
+//     try {
+//         // Create a new record in the database
+//         const newPunchRecord = await PunchHistory.create({
+//             date, punchIn, punchOut, Inaddress, Outaddress,
+//         });
 
-        // Return the created record
-        res.status(201).json({
-            message: 'Punch history created successfully',
-            data: newPunchRecord,
-        });
-    } catch (err) {
-        console.error('Error saving punch history:', err);
-        res.status(500).json({ error: 'Error saving punch history' });
-    }
-});
+//         // Return the created record
+//         res.status(201).json({
+//             message: 'Punch history created successfully',
+//             data: newPunchRecord,
+//         });
+//     } catch (err) {
+//         console.error('Error saving punch history:', err);
+//         res.status(500).json({ error: 'Error saving punch history' });
+//     }
+// });
 
 
 module.exports = async (req, res) => {
