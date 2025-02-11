@@ -75,7 +75,7 @@ module.exports = async (req, res) => {
             date, punchIn, punchOut, Inaddress, Outaddress
         });
   
-        await newPunchRecord.save(); // Save data to MongoDB
+        // await newPunchRecord.save(); // Save data to MongoDB
         res.status(201).json({ message: 'Punch history created', data: newPunchRecord });
       } catch (err) {
         res.status(500).json({ error: 'Error saving punch history' });
