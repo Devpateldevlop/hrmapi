@@ -14,6 +14,18 @@
     {
       "src": "/api/employee",
       "dest": "/api/employee.js"
+    },
+    {
+      "src": "/api/employee/:empcode/leaveBalance",
+      "dest": "/api/leavebalance.js"
+    },
+    {
+      "src": "/api/employee/:empcode/payslip",
+      "dest": "/api/employee.js"
+    },
+    {
+      "src": "/api/employee/:empcode/leavehistory",
+      "dest": "/api/leavebalance.js"
     }
   ]
 }
