@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // });
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your frontend URL
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST'); // Allowed HTTP methods
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST','OPTIONS'); // Allowed HTTP methods
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Allowed headers
 
   if (req.method === 'GET') {
