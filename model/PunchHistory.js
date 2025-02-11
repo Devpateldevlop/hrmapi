@@ -5,7 +5,8 @@ const punchHistorySchema = new mongoose.Schema({
   punchIn: { type: String, required: true },
   punchOut: { type: String, required: true },
   Inaddress: { type: String, required: true },
-  Outaddress: { type: String, required: true }
+  Outaddress: { type: String, required: true },
+  employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
 });
 
 
