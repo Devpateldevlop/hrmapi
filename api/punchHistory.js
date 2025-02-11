@@ -32,17 +32,17 @@ app.get('/api/punchHistory', async (req, res) => {
       }
 });
 
-app.create('/api/punchHistory', async (req, res) => {
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end(); // Handle preflight
-      }
-    try {
-        const punchHistories = await PunchHistory.find();
-        res.status(200).json(punchHistories);
-      } catch (err) {
-        res.status(500).json({ error: 'Error retrieving punch history' });
-      }
-});
+// app.create('/api/punchHistory', async (req, res) => {
+//     if (req.method === 'OPTIONS') {
+//         return res.status(200).end(); // Handle preflight
+//       }
+//     try {
+//         const punchHistories = await PunchHistory.find();
+//         res.status(200).json(punchHistories);
+//       } catch (err) {
+//         res.status(500).json({ error: 'Error retrieving punch history' });
+//       }
+// });
 
 
 module.exports = async (req, res) => {
