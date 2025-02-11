@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const PunchHistory = require('../model/Leavebalance'); // Assuming model is in models folder
+const Leavebalance = require('../model/Leavebalance'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
 
@@ -13,12 +13,22 @@ app.options('*', cors()); // This handles preflight requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+app.get('/api/employee/:empcode/leaveBalance', async (req, res) => {
+    try {
+        const punchHistories = await Leavebalance.find();
+        res.status(200).json(punchHistories); // Send retrieved data back
+    } catch (err) {
+        res.status(500).json({ error: 'Error retrieving punch history' });
+    }
+
+  });
 app.post('/api/employee/:empcode/leaveBalance', async (req, res) => {
     const { empcode } = req.params;
     const { name, value } = req.body;
   
     try {
-      const employee = await Employee.findOne({ Empcode: empcode });
+      const employee = await Leavebalance.findOne({ Empcode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
