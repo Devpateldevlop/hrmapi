@@ -10,14 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@vercel/node": "^4.0.0",
+    "@vercel/node": "^2.10.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.0",
-    "vercel": "^32.3.0"
+    "vercel": "^28.18.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
