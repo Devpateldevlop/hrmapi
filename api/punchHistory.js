@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const Employee = require('./models/Employee');
 const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
@@ -22,15 +23,28 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 // Handle GET request for punch history
-app.get('/api/employee/:empcode/punchHistory', async (req, res) => {
+// GET: Fetch the punch history for a particular employee using EmployeeCode
+app.get('/PunchHistory/:employeeCode', async (req, res) => {
     try {
-        // const punchHistories = await PunchHistory.find();
-        const employee = await PunchHistory.findOne({ EmployeeCode: empcode })
-        res.status(200).json(employee.punchHistory); // Send retrieved data back
+        // Find the employee by EmployeeCode
+        const employee = await Employee.findOne({ EmployeeCode: req.params.employeeCode }).populate('punchHistory');
+
+        // If employee is not found, return 404
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        // Return the employee's punch history
+        res.status(200).json({
+            message: 'Punch history fetched successfully',
+            punchHistory: employee.punchHistory
+        });
     } catch (err) {
-        res.status(500).json({ error: 'Error retrieving punch history' });
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err });
     }
 });
+
 
 // Handle POST request to create new punch history
 // app.post('/api/punchHistory', async (req, res) => {
@@ -61,27 +75,41 @@ app.get('/api/employee/:empcode/punchHistory', async (req, res) => {
 //     }
 // });
 
-app.post('/api/employee/:empcode/punchHistory', async (req, res) => {
-    const { empcode } = req.params;
-    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
-  
+
+
+// Create Punch History for a particular employee
+app.post('/PunchHistory/:employeeCode', async (req, res) => {
     try {
-      const employee = await PunchHistory.findOne({ EmployeeCode: empcode });
-  
-      if (!employee) return res.status(404).json({ error: 'Employee not found' });
-  
-      const newPunchHistory = new PunchHistory({ date, punchIn, punchOut, Inaddress, Outaddress, employee: employee._id });
-      await newPunchHistory.save();
-  
-      employee.punchHistory.push(newPunchHistory);
-      await employee.save();
-  
-      res.status(201).json({ message: 'PunchHistory added successfully', data: newPunchHistory });
+        // Find the employee by EmployeeCode
+        const employee = await Employee.findOne({ EmployeeCode: req.params.employeeCode });
+
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        // Create a new punch history entry
+        const { punchInTime, punchOutTime, date } = req.body;
+        
+        const newPunchHistory = new PunchHistory({
+            employee: employee._id,  // Store the reference to the Employee model
+            punchInTime,
+            punchOutTime,
+            date
+        });
+
+        // Save the punch history
+        const savedPunchHistory = await newPunchHistory.save();
+
+        // Update the employee's punch history array
+        employee.punchHistory.push(savedPunchHistory._id);
+        await employee.save();
+
+        res.status(201).json({ message: 'Punch history added successfully', savedPunchHistory });
     } catch (err) {
-      res.status(500).json({ error: 'Error adding PunchHistory' });
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err });
     }
-  });
-  
+});
 // Handle OPTIONS requests for CORS preflight
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
