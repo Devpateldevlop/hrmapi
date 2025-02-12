@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Handle GET request for punch history
 // GET: Fetch the punch history for a particular employee using EmployeeCode
-app.get('api/employee/PunchHistory/:employeeCode', async (req, res) => {
+app.get('api/employee/PunchHistory', async (req, res) => {
     try {
         const { employeeCode } = req.params; // Extract employeeCode from URL parameter
         
