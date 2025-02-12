@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const Employee = require('./model/Employee');
+const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
