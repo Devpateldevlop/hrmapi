@@ -84,9 +84,9 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
         // Validate required fields
-        if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
+        // if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+        //     return res.status(400).json({ message: 'Missing required fields' });
+        // }
 
         // Find the employee by employeeCode
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
