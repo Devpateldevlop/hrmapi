@@ -24,17 +24,19 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Handle GET request for punch history
 // GET: Fetch the punch history for a particular employee using EmployeeCode
-app.get('/PunchHistory/:employeeCode', async (req, res) => {
+app.get('api/employee/PunchHistory/:employeeCode', async (req, res) => {
     try {
-        // Find the employee by EmployeeCode
-        const employee = await Employee.findOne({ EmployeeCode: req.params.employeeCode }).populate('punchHistory');
-
+        const { employeeCode } = req.params; // Extract employeeCode from URL parameter
+        
+        // Find the employee by EmployeeCode and populate their punchHistory
+        const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+        
         // If employee is not found, return 404
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        // Return the employee's punch history
+        // Send the employee's punch history
         res.status(200).json({
             message: 'Punch history fetched successfully',
             punchHistory: employee.punchHistory
