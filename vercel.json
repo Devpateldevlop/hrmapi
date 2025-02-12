@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/PunchHistory/:employeeCode",
+      "src": "/api/employee/PunchHistory/:employeeCode",
       "dest": "/api/punchHistory.js"
     },
     {
