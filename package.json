@@ -4,7 +4,7 @@
   "description": "��#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node server.js",
     "start": "node server.js"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.0",
+    "nodejs-crud-mongo": "file:",
     "vercel": "^41.1.0",
     "vm2": "^3.9.19"
   },
