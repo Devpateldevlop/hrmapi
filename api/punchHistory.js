@@ -77,7 +77,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
 });
 
 
-app.put('/api/employee/PunchHistory', async (req, res) => {
+app.put('/api/employee/PunchHistory:punchHistoryId', async (req, res) => {
     try {
         const { punchHistoryId } = req.params;  // Get the punchHistoryId from the URL parameters
         const { employeeCode } = req.query;    // Get the employeeCode from the query parameters
