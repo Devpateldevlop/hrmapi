@@ -51,71 +51,49 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
     }
 });
 
-
-// Handle POST request to create new punch history
-// app.post('/api/punchHistory', async (req, res) => {
-//     // Destructure request body
-//     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
-
-//     // Validate the incoming data (ensure all fields are provided)
-//     if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-//         return res.status(400).json({ error: 'All fields are required' });
-//     }
-
-//     try {
-//         const newPunchRecord = new PunchHistory({
-//             date, punchIn, punchOut, Inaddress, Outaddress
-//         });
-
-       
-//         await newPunchRecord.save();
-        
-       
-//         res.status(201).json({
-//             message: 'Punch history created successfully',
-//             data: newPunchRecord,
-//         });
-//     } catch (err) {
-//         console.error('Error saving punch history:', err);
-//         res.status(500).json({ error: 'Error saving punch history' });
-//     }
-// });
-
-
-
-// Create Punch History for a particular employee
-app.post('/PunchHistory/:employeeCode', async (req, res) => {
+app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
-        // Find the employee by EmployeeCode
-        const employee = await Employee.findOne({ EmployeeCode: req.params.employeeCode });
+        const { employeeCode } = req.query;
+
+        const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+
+        if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const employee = await Employee.findOne({ EmployeeCode: employeeCode });
 
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        // Create a new punch history entry
-        const { punchInTime, punchOutTime, date } = req.body;
-        
         const newPunchHistory = new PunchHistory({
-            employee: employee._id,  // Store the reference to the Employee model
-            punchInTime,
-            punchOutTime,
-            date
+            date,
+            punchIn,
+            punchOut,
+            Inaddress,
+            Outaddress,
+            employee: employee._id  
         });
 
-        // Save the punch history
         const savedPunchHistory = await newPunchHistory.save();
 
-        // Update the employee's punch history array
         employee.punchHistory.push(savedPunchHistory._id);
         await employee.save();
 
-        res.status(201).json({ message: 'Punch history added successfully', savedPunchHistory });
+        res.status(201).json({
+            message: 'Punch history created successfully',
+            punchHistory: savedPunchHistory
+        });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
+
+
+
 // Handle OPTIONS requests for CORS preflight
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
