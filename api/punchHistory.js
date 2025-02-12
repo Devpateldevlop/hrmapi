@@ -103,11 +103,11 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         }
 
         // Update the punch history fields
-        punchHistory.date = date;
-        punchHistory.punchIn = punchIn;
-        punchHistory.punchOut = punchOut;
-        punchHistory.Inaddress = Inaddress;
-        punchHistory.Outaddress = Outaddress;
+        if (date) punchHistory.date = date;
+        if (punchIn) punchHistory.punchIn = punchIn;
+        if (punchOut) punchHistory.punchOut = punchOut;
+        if (Inaddress) punchHistory.Inaddress = Inaddress;
+        if (Outaddress) punchHistory.Outaddress = Outaddress;
 
         // Save the updated punch history to the database
         const updatedPunchHistory = await punchHistory.save();
