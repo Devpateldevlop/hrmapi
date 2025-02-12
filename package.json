@@ -1,14 +1,12 @@
 {
   "name": "nodejs-crud-mongo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "��#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000#\u0000 \u0000h\u0000r\u0000m\u0000a\u0000p\u0000i\u0000\r\u0000 \u0000",
+  "main": "server.js",
   "scripts": {
-    "serve": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@vercel/node": "^2.10.3",
     "body-parser": "^1.20.3",
@@ -17,9 +15,12 @@
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.0",
-    "vercel": "^28.18.5"
+    "vercel": "^41.1.0",
+    "vm2": "^3.9.19"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  }
+  },
+  "author": "",
+  "license": "ISC"
 }
