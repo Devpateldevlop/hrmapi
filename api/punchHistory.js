@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const Employee = require('./models/Employee');
+const Employee = require('./model/Employee');
 const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Handle GET request for punch history
 // GET: Fetch the punch history for a particular employee using EmployeeCode
-app.get('api/employee/PunchHistory', async (req, res) => {
+app.get('api/employee/PunchHistory/:employeeCode', async (req, res) => {
     try {
         const { employeeCode } = req.params; // Extract employeeCode from URL parameter
         
