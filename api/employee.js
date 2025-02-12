@@ -21,7 +21,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
-
 app.post('/api/employee', async (req, res) => {
     const { EmployeeCode, profile } = req.body;
   
@@ -37,7 +36,7 @@ app.post('/api/employee', async (req, res) => {
   app.get('/api/employee', async (req, res) => {
     try {
         const punchHistories = await Employee.find();
-        res.status(200).json(punchHistories); // Send retrieved data back
+        res.status(200).json(punchHistories);
     } catch (err) {
         res.status(500).json({ error: 'Error retrieving punch history' });
     }

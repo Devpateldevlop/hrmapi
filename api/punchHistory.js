@@ -22,50 +22,51 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 // Handle GET request for punch history
-app.get('/api/punchHistory', async (req, res) => {
+app.get('/api/employee/:empcode/punchHistory', async (req, res) => {
     try {
-        const punchHistories = await PunchHistory.find();
-        res.status(200).json(punchHistories); // Send retrieved data back
+        // const punchHistories = await PunchHistory.find();
+        const employee = await PunchHistory.findOne({ EmployeeCode: empcode })
+        res.status(200).json(employee.punchHistory); // Send retrieved data back
     } catch (err) {
         res.status(500).json({ error: 'Error retrieving punch history' });
     }
 });
 
 // Handle POST request to create new punch history
-app.post('/api/punchHistory', async (req, res) => {
-    // Destructure request body
-    const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+// app.post('/api/punchHistory', async (req, res) => {
+//     // Destructure request body
+//     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
-    // Validate the incoming data (ensure all fields are provided)
-    if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
+//     // Validate the incoming data (ensure all fields are provided)
+//     if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+//         return res.status(400).json({ error: 'All fields are required' });
+//     }
 
-    try {
-        const newPunchRecord = new PunchHistory({
-            date, punchIn, punchOut, Inaddress, Outaddress
-        });
+//     try {
+//         const newPunchRecord = new PunchHistory({
+//             date, punchIn, punchOut, Inaddress, Outaddress
+//         });
 
        
-        await newPunchRecord.save();
+//         await newPunchRecord.save();
         
        
-        res.status(201).json({
-            message: 'Punch history created successfully',
-            data: newPunchRecord,
-        });
-    } catch (err) {
-        console.error('Error saving punch history:', err);
-        res.status(500).json({ error: 'Error saving punch history' });
-    }
-});
+//         res.status(201).json({
+//             message: 'Punch history created successfully',
+//             data: newPunchRecord,
+//         });
+//     } catch (err) {
+//         console.error('Error saving punch history:', err);
+//         res.status(500).json({ error: 'Error saving punch history' });
+//     }
+// });
 
 app.post('/api/employee/:empcode/punchHistory', async (req, res) => {
     const { empcode } = req.params;
     const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
   
     try {
-      const employee = await PunchHistory.findOne({ Empcode: empcode });
+      const employee = await PunchHistory.findOne({ EmployeeCode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
