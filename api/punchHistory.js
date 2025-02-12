@@ -48,9 +48,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
         const { employeeCode } = req.query;
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
-        if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
-            return res.status(400).json({ message: 'Missing required fields' });
-        }
+      
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
