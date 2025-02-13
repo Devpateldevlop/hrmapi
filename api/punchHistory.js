@@ -102,17 +102,14 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
             return res.status(404).json({ message: 'Punch history not found' });
         }
 
-        // Update the punch history fields
         if (date) punchHistory.date = date;
         if (punchIn) punchHistory.punchIn = punchIn;
         if (punchOut) punchHistory.punchOut = punchOut;
         if (Inaddress) punchHistory.Inaddress = Inaddress;
         if (Outaddress) punchHistory.Outaddress = Outaddress;
 
-        // Save the updated punch history to the database
         const updatedPunchHistory = await punchHistory.save();
-
-        // Send a success response with the updated punch history data
+        
         res.status(200).json({
             message: 'Punch history updated successfully',
             punchHistory: updatedPunchHistory
