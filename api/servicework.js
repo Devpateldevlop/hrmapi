@@ -28,7 +28,7 @@ app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servi
 
 module.exports = app;
 
-app.get('/api/servicework/service.js', (req, res) => {
+app.get('/api/servicework', (req, res) => {
   res.type('application/javascript');
   res.sendFile(path.join(__dirname, 'public', 'servicework', 'service.js'));
 
