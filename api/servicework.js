@@ -30,7 +30,7 @@ app.post('/api/servicework', async (req, res) => {
       await newAddress.save();
       res.status(201).json({
         message: 'service worker created successfully',
-        file: newAddress
+        file: newAddress.file
       });
     } catch (err) {
       res.status(400).json({ error: err.message });
@@ -40,7 +40,7 @@ app.post('/api/servicework', async (req, res) => {
   app.get('/api/servicework', async (req, res) => {
     try {
       const addresses = await servicework.find();
-      res.status(200).json(JSON.parse(addresses));
+      res.status(200).json(addresses);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
