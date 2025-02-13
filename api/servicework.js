@@ -39,7 +39,7 @@ app.post('/api/servicework', async (req, res) => {
   
   app.get('/api/servicework', async (req, res) => {
     try {
-      const serviceworks = await ServiceWork.find();
+      const serviceworks = await servicework.find();
   
       // Parse the stringified JavaScript code into a JSON-like structure.
       const parsedServiceWorks = serviceworks.map(item => {
