@@ -45,7 +45,7 @@ app.post('/api/servicework', async (req, res) => {
       const parsedServiceWorks = serviceworks.map(item => {
         try {
           // Attempt to parse the file content as JSON (if it's valid JSON).
-          item.file = JSON.parse(item.file);
+          item.file = JSON.parse(JSON.parse(item.file));
         } catch (err) {
           console.error('Error parsing the script:', err);
           item.file = {}; // If parsing fails, set file as an empty object.
