@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 // const Employee = require('../model/Employee');
 const servicework = require('../model/serviceworker'); // Assuming model is in models folder
 const cors = require('cors');
@@ -22,64 +24,98 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
+app.use('/api/servicework', express.static(path.join(__dirname, 'nodejs_crud_mongo')));
 
-app.post('/api/servicework', async (req, res) => {
-    try {
-      const { file } = req.body;
-      const newAddress = new servicework({ file:file });
-      await newAddress.save();
-      res.status(201).json({
-        message: 'service worker created successfully',
-        file: newAddress.file
-      });
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
+// app.post('/api/servicework', async (req, res) => {
+//     try {
+//       const { file } = req.body;
+//       const newAddress = new servicework({ file:file });
+//       await newAddress.save();
+//       res.status(201).json({
+//         message: 'service worker created successfully',
+//         file: newAddress.file
+//       });
+//     } catch (err) {
+//       res.status(400).json({ error: err.message });
+//     }
+//   });
   
-  app.get('/api/servicework', async (req, res) => {
-    try {
-      const serviceworks = await servicework.find();
+//   app.get('/api/servicework', async (req, res) => {
+//     try {
+//       const serviceworks = await servicework.find();
   
-      // Parse the stringified JavaScript code into a JSON-like structure.
-      const parsedServiceWorks = serviceworks.map(item => {
-        try {
-          // Attempt to parse the file content as JSON (if it's valid JSON).
-          item.file = JSON.parse(JSON.parse(item.file));
-        } catch (err) {
-          console.error('Error parsing the script:', err);
-          item.file = {}; // If parsing fails, set file as an empty object.
-        }
-        return item;
-      });
+//       // Parse the stringified JavaScript code into a JSON-like structure.
+//       const parsedServiceWorks = serviceworks.map(item => {
+//         try {
+//           // Attempt to parse the file content as JSON (if it's valid JSON).
+//           item.file = JSON.parse(item.file);
+//         } catch (err) {
+//           console.error('Error parsing the script:', err);
+//           item.file = {}; // If parsing fails, set file as an empty object.
+//         }
+//         return item;
+//       });
   
-      // Return the parsed response.
-      res.status(200).json(parsedServiceWorks);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
+//       res.status(200).json(parsedServiceWorks);
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   });
 
  
 
   
-  app.put('/servicework/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { file } = req.body;
+//   app.put('/servicework/:id', async (req, res) => {
+//     try {
+//       const { id } = req.params;
+//       const { file } = req.body;
   
-      const updatedAddress = await servicework.findByIdAndUpdate(id, { file }, { new: true });
+//       const updatedAddress = await servicework.findByIdAndUpdate(id, { file }, { new: true });
   
-      if (!updatedAddress) {
-        return res.status(404).json({ error: 'Address not found' });
-      }
+//       if (!updatedAddress) {
+//         return res.status(404).json({ error: 'Address not found' });
+//       }
   
-      res.status(200).json(updatedAddress);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
+//       res.status(200).json(updatedAddress);
+//     } catch (err) {
+//       res.status(400).json({ error: err.message });
+//     }
+//   });
+  
+app.post('/api/servicework', (req, res) => {
+  const { filename, code } = req.body;
+  if (!filename || !code) {
+    return res.status(400).send('Filename and code are required');
+  }
+
+  const filePath = path.join(__dirname, 'nodejs_crud_mongo', filename);
+
+  fs.writeFile(filePath, code, (err) => {
+    if (err) {
+      return res.status(500).send('Error saving file');
     }
+    res.status(200).send(`File uploaded successfully: ${filename}`);
   });
-  
+});
+
+// PUT: Update JavaScript code
+  app.put('/api/servicework:filename', (req, res) => {
+  const { filename } = req.params;
+  const { code } = req.body;
+
+  if (!code) {
+    return res.status(400).send('Code is required');
+  }
+
+  const filePath = path.join(__dirname, 'nodejs_crud_mongo', filename);
+
+  fs.writeFile(filePath, code, (err) => {
+    if (err) {
+      return res.status(500).send('Error updating file');
+    }
+    res.status(200).send(`File updated successfully: ${filename}`);
+  });
+});
 
 
 app.options('*', (req, res) => {
