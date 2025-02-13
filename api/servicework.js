@@ -30,7 +30,7 @@ module.exports = app;
 
 app.get('/api/servicework', (req, res) => {
   res.type('application/javascript');
-  res.sendFile(path.join(__dirname, 'public', 'servicework', 'service.js'));
+  res.sendFile (path.join(process.cwd(), 'public', 'servicework', 'service.js'););
   console.log(path.join(__dirname, 'public', 'servicework', 'service.js'));
 //   import path from 'path';
 //    import fs from 'fs';
