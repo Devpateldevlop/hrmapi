@@ -32,21 +32,21 @@ app.get('/api/servicework/service.js', (req, res) => {
   res.type('application/javascript');
   res.sendFile(path.join(__dirname, 'public', 'servicework', 'service.js'));
 
-  import path from 'path';
-   import fs from 'fs';
+//   import path from 'path';
+//    import fs from 'fs';
 
-export default function handler(req, res) {
-  const filePath = path.join(process.cwd(), 'public', 'servicework', 'service.js');
+// export default function handler(req, res) {
+//   const filePath = path.join(process.cwd(), 'public', 'servicework', 'service.js');
   
-  // Ensure the file exists before sending it
-  if (fs.existsSync(filePath)) {
-    // Set the correct MIME type for JavaScript files
-    res.setHeader('Content-Type', 'application/javascript');
-    res.status(200).sendFile(filePath);
-  } else {
-    res.status(404).json({ error: 'File not found' });
-  }
-}
+//   // Ensure the file exists before sending it
+//   if (fs.existsSync(filePath)) {
+//     // Set the correct MIME type for JavaScript files
+//     res.setHeader('Content-Type', 'application/javascript');
+//     res.status(200).sendFile(filePath);
+//   } else {
+//     res.status(404).json({ error: 'File not found' });
+//   }
+// }
 });
 // app.post('/api/servicework', async (req, res) => {
 //     try {
