@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.post('/api/servicework', async (req, res) => {
     try {
       const { file } = req.body;
-      const newAddress = new servicework({ file });
+      const newAddress = new servicework({ file:file });
       await newAddress.save();
       res.status(201).json({
         message: 'service worker created successfully',
