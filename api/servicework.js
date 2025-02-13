@@ -47,7 +47,7 @@ app.post('/api/servicework', async (req, res) => {
         address.file = JSON.parse(address.file);
       } catch (err) {
         console.error('Error parsing file content:', err);
-        address.file = null; // or keep the raw string if it can't be parsed
+        address.file = err; // or keep the raw string if it can't be parsed
       }
       return address;
     });
