@@ -24,8 +24,14 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
-app.use('/api/servicework', express.static(path.join(__dirname, 'nodejs_crud_mongo')));
+app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
 
+module.exports = app;
+
+app.get('/api/servicework/service.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'public', 'servicework', 'service.js'));
+});
 // app.post('/api/servicework', async (req, res) => {
 //     try {
 //       const { file } = req.body;
