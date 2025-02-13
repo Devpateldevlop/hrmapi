@@ -29,25 +29,28 @@ app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servi
 module.exports = app;
 
 app.get('/api/servicework', (req, res) => {
-  res.type('application/javascript');
-  res.sendFile (path.join(process.cwd(), 'public', 'servicework', 'service.js'););
-  console.log(path.join(__dirname, 'public', 'servicework', 'service.js'));
-//   import path from 'path';
-//    import fs from 'fs';
+  // Build the file path
+  const filePath = path.join(__dirname, 'public', 'servicework', 'service.js');
+  console.log('Attempting to serve file from path: ', filePath);
 
-// export default function handler(req, res) {
-//   const filePath = path.join(process.cwd(), 'public', 'servicework', 'service.js');
-  
-//   // Ensure the file exists before sending it
-//   if (fs.existsSync(filePath)) {
-//     // Set the correct MIME type for JavaScript files
-//     res.setHeader('Content-Type', 'application/javascript');
-//     res.status(200).sendFile(filePath);
-//   } else {
-//     res.status(404).json({ error: 'File not found' });
-//   }
-// }
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('File does not exist: ', filePath);
+      return res.status(404).send('File not found');
+    }
+
+    // Serve the file if it exists
+    res.type('application/javascript');
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error('Error sending file: ', err);
+        res.status(500).send('Error sending file');
+      }
+    });
+  });
 });
+
 // app.post('/api/servicework', async (req, res) => {
 //     try {
 //       const { file } = req.body;
