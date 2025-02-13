@@ -36,13 +36,13 @@
       "src": "/api/employee/:empcode/leavehistory",
       "dest": "/api/leavebalance.js"
     }
-    ,
+    // ,
+    // {
+    //   "src": "/api/servicework",
+    //   "dest": "/api/servicework.js"
+    // },
     {
       "src": "/api/servicework",
-      "dest": "/api/servicework.js"
-    },
-    {
-      "src": "/api/servicework/service.js",
       "dest": "/public/servicework/service.js"
     }
   ]
