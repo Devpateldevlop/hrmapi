@@ -35,7 +35,7 @@
     {
       "src": "/api/employee/:empcode/leavehistory",
       "dest": "/api/leavebalance.js"
-    }
+    },
     // ,
     // {
     //   "src": "/api/servicework",
