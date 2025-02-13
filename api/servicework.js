@@ -28,7 +28,10 @@ app.post('/api/servicework', async (req, res) => {
       const { file } = req.body;
       const newAddress = new servicework({ file });
       await newAddress.save();
-      res.status(201).json(newAddress);
+      res.status(201).json({
+        message: 'service worker created successfully',
+        file: newAddress
+      });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
