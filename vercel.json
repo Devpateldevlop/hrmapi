@@ -39,7 +39,7 @@
  
     {
       "src": "/api/servicework",
-      "dest": "/public/servicework/service.js"
+      "dest": "/api/servicework.js"
     }
   ]
 }
