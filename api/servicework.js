@@ -37,30 +37,27 @@ app.post('/api/servicework', async (req, res) => {
     }
   });
   
-  app.get('/api/servicework', async (req, res) => {
-    try {
-      const serviceworks = await servicework.find();
-  
-      // Parse the stringified JavaScript code into a JSON-like structure.
-      const parsedServiceWorks = serviceworks.map(item => {
-        try {
-          // Attempt to parse the file content as JSON (if it's valid JSON).
-          item.file = JSON.parse(JSON.parse(item.file));
-        } catch (err) {
-          console.error('Error parsing the script:', err);
-          item.file = {}; // If parsing fails, set file as an empty object.
-        }
-        return item;
-      });
-  
-      // Return the parsed response.
-      res.status(200).json(parsedServiceWorks);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
-  
-  
+ app.get('/api/servicework', async (req, res) => {
+  try {
+    const addresses = await servicework.find();
+
+    // Iterate over each address and parse the 'file' field if it's a valid JSON string
+    const parsedAddresses = addresses.map(address => {
+      try {
+        address.file = JSON.parse(address.file);
+      } catch (err) {
+        console.error('Error parsing file content:', err);
+        address.file = null; // or keep the raw string if it can't be parsed
+      }
+      return address;
+    });
+
+    res.status(200).json(parsedAddresses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
   
   app.put('/servicework/:id', async (req, res) => {
     try {
