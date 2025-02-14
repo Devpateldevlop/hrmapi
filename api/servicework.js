@@ -24,6 +24,28 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
+// api/servicework.js
+
+const fs = require('fs');
+const path = require('path');
+
+module.exports = (req, res) => {
+  // Define the file path
+  const filePath = path.join(__dirname, '../public/servicework/service.js');
+
+  // Read the file and send it as plain text
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).send('Error reading the file');
+    }
+
+    // Set the response headers to indicate we're sending JavaScript
+    res.setHeader('Content-Type', 'application/javascript');
+    res.status(200).send(data);
+  });
+};
+
+
 app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
 
 module.exports = app;
