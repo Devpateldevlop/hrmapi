@@ -31,9 +31,9 @@ const path = require('path');
 
 
 
-app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
+// app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
 
-module.exports = app;
+// module.exports = app;
 
 app.get('/api/servicework', (req, res) => {
   // Build the file path
@@ -59,7 +59,7 @@ app.get('/api/servicework', (req, res) => {
 
 
   
-module.exports = (req, res) => {
+// module.exports = (req, res) => {
   // Define the file path
   const filePath = path.join(__dirname, '../public/servicework/service.js');
 
@@ -73,7 +73,7 @@ module.exports = (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     res.status(200).send(data);
   });
-};
+// };
 });
 
 // app.post('/api/servicework', async (req, res) => {
