@@ -29,6 +29,36 @@ mongoose.connect(process.env.MONGODB_URI, {
 const fs = require('fs');
 const path = require('path');
 
+
+
+app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
+
+module.exports = app;
+
+app.get('/api/servicework', (req, res) => {
+  // Build the file path
+  // const filePath = path.join(__dirname, 'public', 'servicework', 'service.js');
+  // console.log('Attempting to serve file from path: ', filePath);
+
+  // // Check if the file exists
+  // fs.access(filePath, fs.constants.F_OK, (err) => {
+  //   if (err) {
+  //     console.error('File does not exist: ', filePath);
+  //     return res.status(404).send('File not found');
+  //   }
+
+  //   // Serve the file if it exists
+  //   res.type('application/javascript');
+  //   res.sendFile(filePath, (err) => {
+  //     if (err) {
+  //       console.error('Error sending file: ', err);
+  //       res.status(500).send('Error sending file');
+  //     }
+  //   });
+  // });
+
+
+  
 module.exports = (req, res) => {
   // Define the file path
   const filePath = path.join(__dirname, '../public/servicework/service.js');
@@ -44,33 +74,6 @@ module.exports = (req, res) => {
     res.status(200).send(data);
   });
 };
-
-
-app.use('/api/servicework', express.static(path.join(__dirname, 'public', 'servicework')));
-
-module.exports = app;
-
-app.get('/api/servicework', (req, res) => {
-  // Build the file path
-  const filePath = path.join(__dirname, 'public', 'servicework', 'service.js');
-  console.log('Attempting to serve file from path: ', filePath);
-
-  // Check if the file exists
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.error('File does not exist: ', filePath);
-      return res.status(404).send('File not found');
-    }
-
-    // Serve the file if it exists
-    res.type('application/javascript');
-    res.sendFile(filePath, (err) => {
-      if (err) {
-        console.error('Error sending file: ', err);
-        res.status(500).send('Error sending file');
-      }
-    });
-  });
 });
 
 // app.post('/api/servicework', async (req, res) => {
