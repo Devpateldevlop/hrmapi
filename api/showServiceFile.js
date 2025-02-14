@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   // Read the file contents
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
-      return res.status(500).send('Error reading the file');
+      return res.status(500).send('Error reading the file'+err);
     }
 
     // Set the response header for plain text (JavaScript)
