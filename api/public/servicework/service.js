@@ -1,3 +1,8 @@
+
+if (typeof self !== 'undefined') {
+  // Use self here (for browser environment)
+
+
 self.addEventListener("install", (event) => {
     event.waitUntil(
       caches.open("v1").then((cache) => {
@@ -95,4 +100,4 @@ self.addEventListener("install", (event) => {
       })
     );
   });
-  
+}
