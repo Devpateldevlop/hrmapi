@@ -84,7 +84,6 @@ self.addEventListener("install", (event) => {
         resolve();
       }, 2000);
     });
->>>>>>> 7f10fb3e (deep59)
   }
   
   self.addEventListener("fetch", function (event) {
