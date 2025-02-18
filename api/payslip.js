@@ -51,10 +51,11 @@ app.post('/api/employee/payslip', async (req, res) => {
             NetEarning,
             GrossEarning,
             Month,
-            basicSalary,
-            netSalary,
-            deductionType,
-            amount,
+            BasicSalary,
+            NetSalary,
+            DeductionType,
+            Amount,
+            Bonuses,
             Year} = req.body;
       
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
@@ -67,10 +68,11 @@ app.post('/api/employee/payslip', async (req, res) => {
             NetEarning,
             GrossEarning,
             Month,
-            basicSalary,
-            netSalary,
-            deductionType,
-            amount,
+            BasicSalary,
+            NetSalary,
+            DeductionType,
+            Amount,
+            Bonuses,
             Year,
             employee: employee._id  
         });

@@ -8,21 +8,22 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 
 const deductionSchema = new mongoose.Schema({
     Type: { type: String, default: '' },
-    Amount: { type: String, default: '' }
+    Amount: { type: Number, default: '' }
   });
   
   // Define the Payslip Schema
   const payslipSchema = new mongoose.Schema({
     Deductions: [deductionSchema],  
     LOP_LWP: { type: String, default: '' },
-    NetEarning: { type: String, default: '' },
-    GrossEarning: { type: String, default: '' },
+    NetEarning: { type: Number, default: '' },
+    GrossEarning: { type: Number, default: '' },
     Month: { type: String, default: '' },
-    basicSalary: { type: String, default: '' },
-    netSalary: { type: String, default: '' },
-    deductionType: { type: String, default: '' },
-    amount: { type: String, default: '' },
+    BasicSalary: { type: Number, default: '' },
+    NetSalary: { type: Number, default: '' },
+    DeductionType: { type: String, default: '' },
+    Amount: { type: Number, default: '' },
     Year: { type: String, default: '' },
+    Bonuses: { type: Number, default: '' },
     employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
   });
 
