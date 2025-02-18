@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const Employee = require('../model/Employee');
 const Payslip = require('../model/Payslip'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
@@ -27,7 +28,7 @@ app.get('/api/employee/payslip', async (req, res) => {
       if (!employeeCode) {
           return res.status(400).json({ message: 'Employee code is required' });
       }
-      const employee = await Payslip.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+      const employee = await Payslip.findOne({ EmployeeCode: employeeCode }).populate('payslips');
       if (!employee) {
           return res.status(404).json({ message: 'Employee not found' });
       }
@@ -40,28 +41,96 @@ app.get('/api/employee/payslip', async (req, res) => {
       res.status(500).json({ message: 'Server error', error: err });
   }
 });
-app.post('/api/employee/:empcode/payslip', async (req, res) => {
-    const { empcode } = req.params;
-    const { month, basicSalary, bonus, deductions, netSalary, paidDate } = req.body;
-  
-    try {
-      const employee = await Payslip.findOne({ Empcode: empcode });
-  
-      if (!employee) return res.status(404).json({ error: 'Employee not found' });
-  
-      const newPayslip = new Payslip({ month, basicSalary, bonus, deductions, netSalary, paidDate, employee: employee._id });
-      await newPayslip.save();
-  
-      employee.payslips.push(newPayslip);
-      await employee.save();
-  
-      res.status(201).json({ message: 'Payslip added successfully', data: newPayslip });
-    } catch (err) {
-      res.status(500).json({ error: 'Error adding Payslip' });
-    }
-  });
-  
 
+app.post('/api/employee/payslip', async (req, res) => {
+    try {
+        const { employeeCode } = req.query;
+        const {   
+            Deductions,  
+            LOP_LWP,
+            NetEarning,
+            GrossEarning,
+            Month,
+            basicSalary,
+            netSalary,
+            deductionType,
+            amount,
+            Year} = req.body;
+      
+        const employee = await Employee.findOne({ EmployeeCode: employeeCode });
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+        const newPunchHistory = new Payslip({
+            Deductions,  
+            LOP_LWP,
+            NetEarning,
+            GrossEarning,
+            Month,
+            basicSalary,
+            netSalary,
+            deductionType,
+            amount,
+            Year,
+            employee: employee._id  
+        });
+        const savedPunchHistory = await newPunchHistory.save();
+        employee.payslips.push(savedPunchHistory._id);
+        await employee.save();
+        res.status(201).json({
+            message: 'Payslip created successfully',
+            punchHistory: savedPunchHistory
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err });
+    }
+});
+
+app.put('/api/employee/payslip', async (req, res) => {
+    try {
+        const { punchHistoryId } = req.query; 
+        const { employeeCode } = req.query;    
+
+        const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
+
+        // Validate required fields
+        // if (!date || !punchIn || !punchOut || !Inaddress || !Outaddress) {
+        //     return res.status(400).json({ message: 'Missing required fields' });
+        // }
+
+        // Find the employee by employeeCode
+        const employee = await Employee.findOne({ EmployeeCode: employeeCode });
+
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+        
+        // Find the punch history by its ID and update it
+        const punchHistory = await PunchHistory.findById(punchHistoryId);
+
+        if (!punchHistory) {
+            return res.status(404).json({ message: 'Punch history not found' });
+        }
+
+        if (date) punchHistory.date = date;
+        if (punchIn) punchHistory.punchIn = punchIn;
+        if (punchOut) punchHistory.punchOut = punchOut;
+        if (Inaddress) punchHistory.Inaddress = Inaddress;
+        if (Outaddress) punchHistory.Outaddress = Outaddress;
+        
+        const updatedPunchHistory = await punchHistory.save();
+        
+        res.status(200).json({
+            message: 'Punch history updated successfully',
+            punchHistory: updatedPunchHistory
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error', error: err });
+    }
+});
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
