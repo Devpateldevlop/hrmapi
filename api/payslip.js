@@ -28,7 +28,7 @@ app.get('/api/employee/payslip', async (req, res) => {
       if (!employeeCode) {
           return res.status(400).json({ message: 'Employee code is required' });
       }
-      const employee = await Payslip.findOne({ EmployeeCode: employeeCode }).populate('payslips');
+      const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('payslips');
       if (!employee) {
           return res.status(404).json({ message: 'Employee not found' });
       }
