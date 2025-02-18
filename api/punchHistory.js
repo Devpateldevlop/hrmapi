@@ -1,20 +1,20 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const Employee = require('../model/Employee');
-const PunchHistory = require('../model/PunchHistory'); // Assuming model is in models folder
+const PunchHistory = require('../model/PunchHistory'); 
 const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: '*', // Allow all domains or restrict to your frontend's domain
-    methods: ['GET', 'POST', 'PUT','OPTIONS'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type'], // Allowed headers
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT','OPTIONS'], 
+    allowedHeaders: ['Content-Type'], 
 }));
-app.options('*', cors()); // This handles preflight requests
+
+app.options('*', cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -22,8 +22,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
-// Handle GET request for punch history
-// GET: Fetch the punch history for a particular employee using EmployeeCode
 app.get('/api/employee/PunchHistory', async (req, res) => {
     try {
         const employeeCode = req.query.employeeCode;
@@ -43,7 +41,6 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
-
 app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
         const { employeeCode } = req.query;
@@ -73,14 +70,11 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
-
-
 app.put('/api/employee/PunchHistory', async (req, res) => {
     try {
-        const { punchHistoryId } = req.query;  // Get the punchHistoryId from the URL parameters
-        const { employeeCode } = req.query;    // Get the employeeCode from the query parameters
+        const { punchHistoryId } = req.query; 
+        const { employeeCode } = req.query;    
 
-        // Get the updated punch history data from the request body
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
         // Validate required fields
@@ -94,7 +88,7 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-
+        
         // Find the punch history by its ID and update it
         const punchHistory = await PunchHistory.findById(punchHistoryId);
 
@@ -107,7 +101,7 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         if (punchOut) punchHistory.punchOut = punchOut;
         if (Inaddress) punchHistory.Inaddress = Inaddress;
         if (Outaddress) punchHistory.Outaddress = Outaddress;
-
+        
         const updatedPunchHistory = await punchHistory.save();
         
         res.status(200).json({
@@ -120,8 +114,6 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
-
-
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

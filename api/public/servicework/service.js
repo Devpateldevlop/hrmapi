@@ -1,7 +1,4 @@
 
-if (typeof self !== 'undefined') {
-  // Use self here (for browser environment)
-
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
@@ -100,4 +97,3 @@ self.addEventListener("install", (event) => {
       })
     );
   });
-}

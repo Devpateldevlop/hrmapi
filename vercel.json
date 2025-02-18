@@ -29,7 +29,7 @@
       "dest": "/api/leavebalance.js"
     },
     {
-      "src": "/api/employee/:empcode/payslip",
+      "src": "/api/employee/payslip",
       "dest": "/api/payslip.js"
     },
     {

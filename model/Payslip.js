@@ -5,15 +5,26 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 })
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
-const PayslipSchema = new mongoose.Schema({
-    month: { type: String, required: true },
-    basicSalary: { type: Number, required: true },
-    bonus: { type: Number, required: true },
-    deductions: { type: Number, required: true },
-    netSalary: { type: Number, required: true },
-    paidDate: { type: Date, required: true },
-    employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' } // Reference to Employee
-});
 
-const Payslip = mongoose.model('Payslip', PayslipSchema);
+const deductionSchema = new mongoose.Schema({
+    Type: { type: String, default: '' },
+    Amount: { type: String, default: '' }
+  });
+  
+  // Define the Payslip Schema
+  const payslipSchema = new mongoose.Schema({
+    Deductions: [deductionSchema],  
+    LOP_LWP: { type: String, default: '' },
+    NetEarning: { type: String, default: '' },
+    GrossEarning: { type: String, default: '' },
+    Month: { type: String, default: '' },
+    basicSalary: { type: String, default: '' },
+    netSalary: { type: String, default: '' },
+    deductionType: { type: String, default: '' },
+    amount: { type: String, default: '' },
+    Year: { type: String, default: '' },
+    employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
+  });
+
+const Payslip = mongoose.model('Payslip', payslipSchema);
 module.exports = Payslip;

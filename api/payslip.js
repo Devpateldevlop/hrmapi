@@ -21,6 +21,25 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
+app.get('/api/employee/payslip', async (req, res) => {
+  try {
+      const employeeCode = req.query.employeeCode;
+      if (!employeeCode) {
+          return res.status(400).json({ message: 'Employee code is required' });
+      }
+      const employee = await Payslip.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+      if (!employee) {
+          return res.status(404).json({ message: 'Employee not found' });
+      }
+      res.status(200).json({
+          message:'Payslip fetched successfully',
+          payslip: employee.payslips
+      });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error', error: err });
+  }
+});
 app.post('/api/employee/:empcode/payslip', async (req, res) => {
     const { empcode } = req.params;
     const { month, basicSalary, bonus, deductions, netSalary, paidDate } = req.body;
