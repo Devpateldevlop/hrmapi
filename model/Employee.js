@@ -24,7 +24,7 @@ const EmployeeSchema = new mongoose.Schema({
         Email: { type: String, required: true },
         MobileNumber: { type: String, required: true },
         role: { type: String, required: true },
-        hireDate: { type: Date, required: true },
+        hireDate: { type: String, required: true },
         DateOfBirth:{type:String},
         PANNumber:{type:String},
         AadhaarNumber:{type:String},
