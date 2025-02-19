@@ -16,7 +16,7 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 // });
 
 const EmployeeSchema = new mongoose.Schema({
-    EmployeeCode: { type: Number, required: true, unique: true },
+    EmployeeCode: { type: Number, required: true },
     profile: {
         firstName: { type: String, required: true },
         Password:{type:String,required:true},
