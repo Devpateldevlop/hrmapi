@@ -44,7 +44,7 @@ const EmployeeSchema = new mongoose.Schema({
         PermanentAddress:{type:String},
         profileImage: { type: String },  
             Gender:{type:String},
-            MaritalStatus:{type:String},
+            MaritalStatus:{type:String}
     },
     punchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PunchHistory' }],
     payslips: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payslip' }],
