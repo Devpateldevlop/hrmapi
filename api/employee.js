@@ -22,17 +22,33 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 app.post('/api/employee', async (req, res) => {
-    const { EmployeeCode, profile } = req.body;
-  
-    try {
+  const { EmployeeCode, profile } = req.body;
+
+  // Validate that EmployeeCode and required fields are present
+  if (!EmployeeCode) {
+      return res.status(400).json({ error: 'EmployeeCode is required' });
+  }
+
+  if (!profile || !profile.firstName || !profile.lastName || !profile.Email) {
+      return res.status(400).json({ error: 'Required profile fields are missing' });
+  }
+
+  try {
+      // Check if an employee with the same EmployeeCode already exists
+      const existingEmployee = await Employee.findOne({ EmployeeCode });
+      if (existingEmployee) {
+          return res.status(400).json({ error: 'Employee with this EmployeeCode already exists' });
+      }
+
       const newEmployee = new Employee({ EmployeeCode, profile });
       await newEmployee.save();
       res.status(201).json({ message: 'Employee created successfully', data: newEmployee });
-    } catch (err) {
+  } catch (err) {
+      console.error('Error creating employee:', err);
       res.status(500).json({ error: 'Error creating Employee' });
-    }
-  });
-  
+  }
+});
+
   app.get('/api/employee', async (req, res) => {
     try {
         const punchHistories = await Employee.find();
