@@ -10,8 +10,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
 app.options('*', cors()); // This handles preflight requests
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
