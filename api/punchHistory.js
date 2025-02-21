@@ -55,10 +55,10 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                 const dayOfWeek = date.getDay(); 
           
                 if (dayOfWeek === 0) {
-                  obj.sundays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB')})
+                  obj.sundays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB').replace(/\//g, '-')})
                 }
                 if (dayOfWeek === 6 && day % 2 === 0) {
-                 obj.evenSaturdays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB')});
+                 obj.evenSaturdays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB').replace(/\//g, '-')});
                 }
               }
               result.push(obj);
