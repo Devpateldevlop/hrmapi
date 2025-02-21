@@ -40,10 +40,11 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
 
 
         const getSundaysAndEvenSaturdays = (year) => {
-            const result = {};
+            const result = [];
             for (let month = 0; month < 12; month++) {
-              const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
-              result[monthName] = {
+              const monthName = new Date(year, month).toLocaleDateString().split("/").shift()
+              obj = {
+                month: monthName,
                 sundays: [],
                 evenSaturdays: [],
               };
@@ -54,33 +55,45 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                 const dayOfWeek = date.getDay(); 
           
                 if (dayOfWeek === 0) {
-                  result[monthName].sundays.push(day);
+                  obj.sundays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB')})
                 }
                 if (dayOfWeek === 6 && day % 2 === 0) {
-                  result[monthName].evenSaturdays.push(day);
+                 obj.evenSaturdays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB')});
                 }
               }
+              result.push(obj);
             }
             return result;
           };
           const year = new Date().getFullYear();
           const sundaysAndEvenSaturdays = getSundaysAndEvenSaturdays(year);
-            var months=['january','February','March','April','May','June','July','August','September','October','November','December'];
-            
-          var obj={
-            type: "sunday",
-            date: sundaysAndEvenSaturdays,
-            name: "sunday"
-          }
+         
+          sundaysAndEvenSaturdays.forEach(element => {
+          element.sundays.forEach(element1 => {
+            var objsatsun={
+                type: "nonWorking",
+                name: "non-Working Day",
+                date: element1.date
+            }
+            employee.masterholiday.push(objsatsun);
+          });
+          element.evenSaturdays.forEach(element1 => {
+            var objsatsun={
+                type: "nonWorking",
+                name: "non-Working Day",
+                date: element1.date
+            }
+            employee.masterholiday.push(objsatsun);
+          });
+        });
 
-          employee.masterholiday.push({year:sundaysAndEvenSaturdays});
+        //   employee.masterholiday.push({year:sundaysAndEvenSaturdays});
 
-          console.log(sundaysAndEvenSaturdays);
+        //   console.log(sundaysAndEvenSaturdays);
         res.status(200).json({
             message: 'Punch history fetched successfully',
             punchHistory: employee.punchHistory,
-            masterholiday: employee.masterholiday,
-            sundaysAndEvenSaturdays: sundaysAndEvenSaturdays
+            masterholiday: employee.masterholiday
         });
     } catch (err) {
         console.error(err);
