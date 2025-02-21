@@ -36,9 +36,6 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
         
         employee.masterholiday = await calendar.find();
 
-
-
-
         const getSundaysAndEvenSaturdays = (year) => {
             const result = [];
             for (let month = 0; month < 12; month++) {
@@ -55,10 +52,12 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                 const dayOfWeek = date.getDay(); 
           
                 if (dayOfWeek === 0) {
-                  obj.sundays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB').replace(/\//g, '-')})
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/'); 
+                  obj.sundays.push({"date":`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`});
                 }
                 if (dayOfWeek === 6 && day % 2 === 0) {
-                 obj.evenSaturdays.push({"date":new Date(year, month, day).toLocaleDateString('en-GB').replace(/\//g, '-')});
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/'); 
+                 obj.evenSaturdays.push({"date":`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`});
                 }
               }
               result.push(obj);
@@ -87,9 +86,6 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
           });
         });
 
-        //   employee.masterholiday.push({year:sundaysAndEvenSaturdays});
-
-        //   console.log(sundaysAndEvenSaturdays);
         res.status(200).json({
             message: 'Punch history fetched successfully',
             punchHistory: employee.punchHistory,
