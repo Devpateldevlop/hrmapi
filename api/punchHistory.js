@@ -68,7 +68,8 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
           console.log(sundaysAndEvenSaturdays);
         res.status(200).json({
             message: 'Punch history fetched successfully',
-            punchHistory: employee.punchHistory
+            punchHistory: employee.punchHistory,
+            masterholiday: employee.masterholiday
         });
     } catch (err) {
         console.error(err);
