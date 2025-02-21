@@ -21,10 +21,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 app.get('/api/calendar', async (req, res) => {
-
     try {
-        const calendar = await calendar.find();
-        res.status(200).json({ message: 'calendar fetched successfully', data: calendar });
+        const calendar1 = await calendar.find();
+        res.status(200).json({ message: 'calendar fetched successfully', data: calendar1 });
     } catch (err) {
         res.status(500).json({ error: 'Error fetching calendar' });
     }
