@@ -34,8 +34,10 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
             return res.status(404).json({ message: 'Employee not found' });
         }
         
-
         employee.masterholiday = await calendar.find();
+
+
+
 
         const getSundaysAndEvenSaturdays = (year) => {
             const result = {};
@@ -54,22 +56,31 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                 if (dayOfWeek === 0) {
                   result[monthName].sundays.push(day);
                 }
-          
                 if (dayOfWeek === 6 && day % 2 === 0) {
                   result[monthName].evenSaturdays.push(day);
                 }
               }
             }
-          
             return result;
           };
-          const year = 2025;
+          const year = new Date().getFullYear();
           const sundaysAndEvenSaturdays = getSundaysAndEvenSaturdays(year);
+            var months=['january','February','March','April','May','June','July','August','September','October','November','December'];
+            
+          var obj={
+            type: "sunday",
+            date: sundaysAndEvenSaturdays,
+            name: "sunday"
+          }
+
+          employee.masterholiday.push({year:sundaysAndEvenSaturdays});
+
           console.log(sundaysAndEvenSaturdays);
         res.status(200).json({
             message: 'Punch history fetched successfully',
             punchHistory: employee.punchHistory,
-            masterholiday: employee.masterholiday
+            masterholiday: employee.masterholiday,
+            sundaysAndEvenSaturdays: sundaysAndEvenSaturdays
         });
     } catch (err) {
         console.error(err);
