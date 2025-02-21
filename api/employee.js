@@ -77,7 +77,7 @@ app.delete('/api/employee', async (req, res) => {
         res.status(500).json({ error: 'Error deleting Employee' });
     }
 });
-
+;
   app.get('/api/employee', async (req, res) => {
     try {
         const punchHistories = await Employee.find();

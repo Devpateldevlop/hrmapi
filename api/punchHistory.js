@@ -29,6 +29,17 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
             return res.status(400).json({ message: 'Employee code is required' });
         }
         const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+       
+       
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;  
+        var data=[]
+        employee.punchHistory.forEach(element => {
+         if(parseInt(element.date.split("-")[1], 10)==currentMonth -1)
+            data.push(element)
+            
+          });
+    //   console.log(data)
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
@@ -50,6 +61,10 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
+    
+        // const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+  
+
         const newPunchHistory = new PunchHistory({
             date,
             punchIn,
@@ -58,6 +73,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
             Outaddress,
             employee: employee._id  
         });
+
         const savedPunchHistory = await newPunchHistory.save();
         employee.punchHistory.push(savedPunchHistory._id);
         await employee.save();
@@ -70,6 +86,9 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
+
+
+
 app.put('/api/employee/PunchHistory', async (req, res) => {
     try {
         const { punchHistoryId } = req.query; 

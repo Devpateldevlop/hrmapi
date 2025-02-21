@@ -40,6 +40,12 @@
     {
       "src": "/api/servicework",
       "dest": "/api/public/servicework/service.js"
+    },
+    
+    {
+      "src": "/api/calendar",
+      "dest": "/api/calendar.js"
     }
+
   ]
 }
