@@ -8,7 +8,7 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 const calendarSchema = new mongoose.Schema({
-    date: { type: Date, required: true },
+    date: { type: String, required: true },
     type: { type: String, required: true },
     name: { type: String, required: true },
 });
