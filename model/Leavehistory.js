@@ -8,5 +8,5 @@ const LeaveHistorySchema = new mongoose.Schema({
     employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' } // Reference to Employee
 });
 
-const LeaveHistory = mongoose.model('calendar', LeaveHistorySchema);
+const LeaveHistory = mongoose.model('Leavehistory', LeaveHistorySchema);
 module.exports = LeaveHistory;

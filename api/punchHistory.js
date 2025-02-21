@@ -3,6 +3,7 @@ const express = require('express');
 const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory'); 
 const cors = require('cors');
+const calendar = require('../model/calendar');
 const app = express();
 
 app.use(cors({
@@ -29,20 +30,42 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
             return res.status(400).json({ message: 'Employee code is required' });
         }
         const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
-       
-       
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1;  
-        var data=[]
-        employee.punchHistory.forEach(element => {
-         if(parseInt(element.date.split("-")[1], 10)==currentMonth -1)
-            data.push(element)
-            
-          });
-    //   console.log(data)
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
+        
+
+        employee.masterholiday = await calendar.find();
+
+        const getSundaysAndEvenSaturdays = (year) => {
+            const result = {};
+            for (let month = 0; month < 12; month++) {
+              const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+              result[monthName] = {
+                sundays: [],
+                evenSaturdays: [],
+              };
+              const daysInMonth = new Date(year, month + 1, 0).getDate();
+          
+              for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay(); 
+          
+                if (dayOfWeek === 0) {
+                  result[monthName].sundays.push(day);
+                }
+          
+                if (dayOfWeek === 6 && day % 2 === 0) {
+                  result[monthName].evenSaturdays.push(day);
+                }
+              }
+            }
+          
+            return result;
+          };
+          const year = 2025;
+          const sundaysAndEvenSaturdays = getSundaysAndEvenSaturdays(year);
+          console.log(sundaysAndEvenSaturdays);
         res.status(200).json({
             message: 'Punch history fetched successfully',
             punchHistory: employee.punchHistory
@@ -62,7 +85,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
             return res.status(404).json({ message: 'Employee not found' });
         }
     
-        // const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+        // var employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
   
 
         const newPunchHistory = new PunchHistory({

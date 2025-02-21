@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
-app.post('/api/employee/:empcode/leaveHistory', async (req, res) => {
+app.post('/api/employee/leaveHistory', async (req, res) => {
     const { empcode } = req.params;
     const { date, type, duration, status } = req.body;
   
