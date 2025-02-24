@@ -30,12 +30,12 @@ app.get('/api/calendar', async (req, res) => {
 });
 app.post('/api/calendar', async (req, res) => {
     const { date, type, name } = req.body;
-  
+    const calendar2 = await calendar.find();
     try {
       const calendar1 = new calendar({ date, type, name });
       await calendar1.save();
   
-      res.status(201).json({ message: 'LeaveHistory added successfully', data: calendar1 });
+      res.status(201).json({ message: 'LeaveHistory added successfully', data: calendar2 });
     } catch (err) {
       res.status(500).json({ error: 'Error adding LeaveHistory' });
     }
