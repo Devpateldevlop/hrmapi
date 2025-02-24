@@ -36,38 +36,59 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
         
         employee.masterholiday = await calendar.find();
 
-        const getSundaysAndEvenSaturdays = (year) => {
+        const getSundaysAndSecondFourthSaturdays = (year) => {
             const result = [];
+          
             for (let month = 0; month < 12; month++) {
-              const monthName = new Date(year, month).toLocaleDateString().split("/").shift()
-              obj = {
-                month: monthName,
+              const obj = {
+                month: (month + 1).toString(),  // Month as a string '1' to '12'
                 sundays: [],
-                evenSaturdays: [],
+                evenSaturdays: []
               };
+          
               const daysInMonth = new Date(year, month + 1, 0).getDate();
+          
+              let saturdayCount = 0; // To track the number of Saturdays in the month
           
               for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(year, month, day);
-                const dayOfWeek = date.getDay(); 
+                const dayOfWeek = date.getDay();
           
+                // Check for Sundays (day 0)
                 if (dayOfWeek === 0) {
-                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/'); 
-                  obj.sundays.push({"date":`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`});
+                  const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                  obj.sundays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
                 }
-                if (dayOfWeek === 6 && day % 2 === 0) {
-                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/'); 
-                 obj.evenSaturdays.push({"date":`${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}`});
+          
+                // Check for Saturdays (day 6)
+                if (dayOfWeek === 6) {
+                  saturdayCount++; // Increment Saturday count
+                  
+                  // If it's the 2nd Saturday, push it
+                  if (saturdayCount === 2) {
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                    obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
+                  }
+          
+                  // If it's the 4th Saturday, push it
+                  if (saturdayCount === 4) {
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                    obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
+                  }
                 }
               }
+          
               result.push(obj);
             }
+          
             return result;
           };
+          
           const year = new Date().getFullYear();
-          const sundaysAndEvenSaturdays = getSundaysAndEvenSaturdays(year);
-         
-          sundaysAndEvenSaturdays.forEach(element => {
+          const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
+          console.log(sundaysAndSecondFourthSaturdays);
+          
+          sundaysAndSecondFourthSaturdays.forEach(element => {
           element.sundays.forEach(element1 => {
             var objsatsun={
                 type: "nonWorking",
@@ -91,10 +112,34 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
             punchHistory: employee.punchHistory,
             masterholiday: employee.masterholiday
         });
+
+        var arra=[]
+        employee.punchHistory.forEach(element => { 
+            if(new Date().getMonth() == new Date(element.date).getMonth() && new Date().getFullYear() == new Date(element.date).getFullYear()){
+                  if(element.punchIn != null && element.punchOut != null || element.punchIn != "" && element.punchOut != ""){
+                    arra.push(element);
+                  }
+            }
+        });
+
+        employee.masterholiday.forEach(elementq => { 
+            if(new Date().getMonth() == new Date(elementq.date).getMonth() && new Date().getFullYear() == new Date(elementq.date).getFullYear()){
+                    if(elementq.type == "nonWorking" ||  elementq.type == "HoliDay"){
+                        arra.push(elementq);
+                    }
+            }
+        });
+
+        var salary = employee.profile.salary 
+        const dailySalary = salary / 30
+        const workedSalary = arra.length * dailySalary;
+        console.log(workedSalary)
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err });
     }
+
 });
 app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
@@ -108,7 +153,6 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
     
         // var employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
   
-
         const newPunchHistory = new PunchHistory({
             date,
             punchIn,
@@ -130,8 +174,6 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err });
     }
 });
-
-
 
 app.put('/api/employee/PunchHistory', async (req, res) => {
     try {
