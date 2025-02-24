@@ -32,13 +32,16 @@ app.post('/api/calendar', async (req, res) => {
     const { date, type, name } = req.body;
     const calendar2 = await calendar.find();
     try {
-      const calendar1 = new calendar({ date, type, name });
-      await calendar1.save();
-  
-      res.status(201).json({ message: 'LeaveHistory added successfully', data: calendar2 });
+        const updatedCalendar = await calendar.findOneAndUpdate(
+            { date },  // Find a document by the given date
+            { type, name },  // Fields to update
+            { new: true, upsert: true }  // `new: true` returns the updated document, `upsert: true` creates a new document if not found
+          );
+            // If the document is not found, `upsert` option creates a new document
+      res.status(201).json({ message: updatedCalendar ? 'LeaveHistory updated successfully' : 'LeaveHistory added successfully', data: calendar2 });
     } catch (err) {
       res.status(500).json({ error: 'Error adding LeaveHistory' });
-    }
+    }      
   });
   
 
