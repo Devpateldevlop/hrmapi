@@ -141,11 +141,13 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
     }
 
 });
+
+
 app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
         const { employeeCode } = req.query;
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
-      
+     
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
@@ -208,12 +210,12 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         if (Outaddress) punchHistory.Outaddress = Outaddress;
         
         const updatedPunchHistory = await punchHistory.save();
-        
+       
         res.status(200).json({
             message: 'Punch history updated successfully',
             punchHistory: updatedPunchHistory
         });
-
+         
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err });

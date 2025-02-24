@@ -16,6 +16,10 @@
       "dest": "/api/punchHistory.js"
     },
     {
+      "src": "/api/employee/Deduction",
+      "dest": "/api/deduction.js"
+    },
+    {
       "src": "/api/employee/PunchHistory/:punchHistoryId",
       "methods": ["PUT"],
       "dest": "/api/punchHistory.js"

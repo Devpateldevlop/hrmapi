@@ -43,13 +43,14 @@ const EmployeeSchema = new mongoose.Schema({
         LocalAddress:{type:String},
         PermanentAddress:{type:String},
         profileImage: { type: String },  
-            Gender:{type:String},
-            MaritalStatus:{type:String}
+        Gender:{type:String},
+        MaritalStatus:{type:String}
     },
     punchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PunchHistory' }],
     payslips: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payslip' }],
     leaveBalance: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LeaveBalance' }],
-    leaveHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LeaveHistory' }]
+    leaveHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LeaveHistory' }],
+    deduction: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Deduction' }],
 });
 
 const Employee = mongoose.model('Employee', EmployeeSchema);
