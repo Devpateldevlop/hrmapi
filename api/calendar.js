@@ -72,10 +72,29 @@ app.get('/api/calendar', async (req, res) => {
           
           const year = new Date().getFullYear();
           const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
-        
+          var masterholiday=[]
+          sundaysAndSecondFourthSaturdays.forEach(element => {
+            element.sundays.forEach(element1 => {
+              var objsatsun={
+                  type: "nonWorking",
+                  name: "non-Working Day",
+                  date: element1.date
+              }
+              masterholiday.push(objsatsun);
+            });
+            element.evenSaturdays.forEach(element1 => {
+              var objsatsun={
+                  type: "nonWorking",
+                  name: "non-Working Day",
+                  date: element1.date
+              }
+              masterholiday.push(objsatsun);
+            });
+          });
+
         const calendar1 = await calendar.find();
         res.status(200).json({ message: 'calendar fetched successfully', data: calendar1 ,
-        nonworkingday:sundaysAndSecondFourthSaturdays
+        nonworkingday:masterholiday
         });
     } catch (err) {
         res.status(500).json({ error: 'Error fetching calendar' });
