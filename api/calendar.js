@@ -80,7 +80,7 @@ app.get('/api/calendar', async (req, res) => {
                   name: "non-Working Day",
                   date: element1.date
               }
-              masterholiday.push(objsatsun);
+              calendar1.push(objsatsun);
             });
             element.evenSaturdays.forEach(element1 => {
               var objsatsun={
@@ -88,14 +88,12 @@ app.get('/api/calendar', async (req, res) => {
                   name: "non-Working Day",
                   date: element1.date
               }
-              masterholiday.push(objsatsun);
+              calendar1.push(objsatsun);
             });
           });
 
         const calendar1 = await calendar.find();
-        res.status(200).json({ message: 'calendar fetched successfully', data: calendar1 ,
-        nonworkingday:masterholiday
-        });
+        res.status(200).json({ message: 'calendar fetched successfully', data: calendar1});
     } catch (err) {
         res.status(500).json({ error: 'Error fetching calendar' });
     }
