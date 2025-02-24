@@ -22,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.get('/api/calendar', async (req, res) => {
     try {
+        const calendar1 = await calendar.find();
         const getSundaysAndSecondFourthSaturdays = (year) => {
             const result = [];
           
@@ -92,7 +93,6 @@ app.get('/api/calendar', async (req, res) => {
             });
           });
 
-        const calendar1 = await calendar.find();
         res.status(200).json({ message: 'calendar fetched successfully', data: calendar1});
     } catch (err) {
         res.status(500).json({ error: 'Error fetching calendar' });
