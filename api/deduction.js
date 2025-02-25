@@ -1,5 +1,5 @@
 const express = require('express');
-const Deduction = require('../model/Deduction');
+const Deduction = require('../model/deduction');
 const mongoose = require('mongoose');
 // const express = require('express');
 const Employee = require('../model/Employee');
