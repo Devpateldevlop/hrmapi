@@ -35,13 +35,13 @@ app.post('/api/employee/Deduction', async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-
-        const newPunchHistory = new Deduction({
-            name,
-            amount,
-            description,
-            employee: employee._id  
-        });
+      
+        const newPunchHistory = new Deduction.findOneAndUpdate(
+            {name},
+            {amount,description,
+            employee: employee._id },
+        { new: true, upsert: true }  
+    );
 
         const savedPunchHistory = await newPunchHistory.save();
         employee.deduction.push(savedPunchHistory._id);
@@ -94,24 +94,26 @@ app.get('/api/employee/Deduction', async (req, res) => {
 });
 
 // Update a deduction by ID
-app.patch('/api/employee/Deduction', async (req, res) => {
-    const updates = Object.keys(req.body);
-    const allowedUpdates = ['field1', 'field2']; // Replace with actual fields
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-    if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' });
-    }
+app.put('/api/employee/Deduction', async (req, res) => {
+    const { id } = req.query;
+    const { employeeCode } = req.query;    
+    const { name, amount, description } = req.body;
 
     try {
-        const deduction = await Deduction.findById(req.params.id);
+        const deduction = await Deduction.findById(id);
         if (!deduction) {
-            return res.status(404).send();
+            return res.status(404).json({ message: 'Deduction not found' });
         }
 
-        updates.forEach((update) => deduction[update] = req.body[update]);
-        await deduction.save();
-        res.status(200).send(deduction);
+        if (name) deduction.name = name;
+        if (amount) deduction.amount = amount;
+        if (description) deduction.description = description;
+
+        const updatedDeduction = await deduction.save();
+        res.status(200).json({
+            message: 'Deduction updated successfully',
+            Deduction: updatedDeduction
+        });
     } catch (error) {
         res.status(400).send(error);
     }

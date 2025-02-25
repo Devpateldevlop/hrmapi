@@ -4,6 +4,8 @@ const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory'); 
 const cors = require('cors');
 const calendar = require('../model/calendar');
+const axios = require('axios');
+const schedule = require('node-schedule');
 const app = express();
 
 app.use(cors({
@@ -142,6 +144,38 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
 
 });
 
+const checkPunchOut = async () => {
+    try {
+        const employees = await Employee.find().populate('punchHistory');
+        const currentDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+        for (const employee of employees) {
+            const todayPunch = employee.punchHistory.find(punch => punch.date === currentDate);
+            if (todayPunch && !todayPunch.punchOut) {
+                // Get live location at 7:00 PM
+                const liveLocationResponse = await axios.get('https://api.livelocation.com/getLocation', {
+                    params: {
+                        employeeCode: employee.EmployeeCode,
+                        time: '19:00'
+                    }
+                });
+
+                const liveLocation = liveLocationResponse.data.location;
+
+                todayPunch.punchOut = '23:00'; // Set punchOut time to 11:00 PM
+                todayPunch.Outaddress = liveLocation;
+
+                await todayPunch.save();
+                console.log(`Punch out data updated for employee ${employee.EmployeeCode}`);
+            }
+        }
+    } catch (err) {
+        console.error('Error checking punch out:', err);
+    }
+};
+
+// Call the function at 11:00 PM every day
+schedule.scheduleJob('0 23 * * *', checkPunchOut);
 
 app.post('/api/employee/PunchHistory', async (req, res) => {
     try {
