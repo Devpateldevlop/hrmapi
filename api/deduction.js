@@ -1,5 +1,5 @@
 const express = require('express');
-const Deduction = require('../model/deduction');
+const Deduction = require('../model/Deduction');
 const mongoose = require('mongoose');
 // const express = require('express');
 const Employee = require('../model/Employee');
@@ -24,8 +24,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
-
-
 
 // Create a new deduction
 app.post('/api/employee/Deduction', async (req, res) => {
