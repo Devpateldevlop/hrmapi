@@ -36,10 +36,9 @@ app.post('/api/employee/Deduction', async (req, res) => {
             return res.status(404).json({ message: 'Employee not found' });
         }
       
-        const newPunchHistory = new Deduction.findOneAndUpdate(
-            {name},
-            {amount,description,
-            employee: employee._id },
+        const newPunchHistory = await Deduction.findOneAndUpdate(
+            {name,amount,description,employee: employee._id},
+   
         { new: true, upsert: true }  
     );
 
