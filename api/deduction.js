@@ -3,9 +3,9 @@ const Deduction = require('../model/deduction');
 const mongoose = require('mongoose');
 // const express = require('express');
 const Employee = require('../model/Employee');
-const PunchHistory = require('../model/PunchHistory'); 
+// const PunchHistory = require('../model/PunchHistory'); 
 const cors = require('cors');
-const calendar = require('../model/calendar');
+// const calendar = require('../model/calendar');
 const app = express();
 
 app.use(cors({
