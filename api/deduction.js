@@ -33,7 +33,7 @@ app.post('/api/employee/Deduction', async (req, res) => {
      
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
         if (!employee) {
-            return res.status(404).json({ message: 'Employee not found' });
+            return res.status(404).json({ message: 'Employee not found' }).populate('deduction');
         }
       
         const newPunchHistory = await Deduction.findOneAndUpdate(
