@@ -29,30 +29,41 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.post('/api/employee/Deduction', async (req, res) => {
     try {
         const { employeeCode } = req.query;
-        const { name,amount,description} = req.body;
-     
-        const employee = await Employee.findOne({ EmployeeCode: employeeCode });
-        if (!employee) {
-            return res.status(404).json({ message: 'Employee not found' }).populate('deduction');
-        }
-      
-        const newPunchHistory = await Deduction.findOneAndUpdate(
-            {name,amount,description,employee: employee._id},
-   
-        { new: true, upsert: true }  
-    );
+        const { name, amount, description } = req.body;
 
-        const savedPunchHistory = await newPunchHistory.save();
-        employee.deduction.push(savedPunchHistory._id);
-        await employee.save();
-        res.status(201).json({
-            message: 'Deduction created successfully',
-            Deduction: savedPunchHistory
-        });
-        
-        // const deduction = new Deduction(req.body);
-        // await deduction.save();
-        // res.status(201).send(deduction);
+        let employee = await Employee.findOne({ EmployeeCode: employeeCode });
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        let deduction = await Deduction.findOne({ employee: employee._id, name });
+        if (deduction) {
+            // Update existing deduction
+            if (amount) deduction.amount = amount;
+            if (description) deduction.description = description;
+            const updatedDeduction = await deduction.save();
+            return res.status(200).json({
+                message: 'Deduction updated successfully',
+                Deduction: updatedDeduction
+            });
+        } else {
+            // Create new deduction
+            const newDeduction = new Deduction({
+                name,
+                amount,
+                description,
+                employee: employee._id
+            });
+
+            const savedDeduction = await newDeduction.save();
+            employee.deduction.push(savedDeduction._id);
+            await employee.save();
+
+            return res.status(201).json({
+                message: 'Deduction created successfully',
+                Deduction: savedDeduction
+            });
+        }
     } catch (error) {
         res.status(400).send(error);
     }
