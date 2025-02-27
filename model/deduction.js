@@ -9,7 +9,7 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 const deductionSchema = new mongoose.Schema({
     name: { type: String}, 
     amount: {type: Number},
-    discription: {type: String },
+    description: {type: String },
     employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
 });
 

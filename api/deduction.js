@@ -29,7 +29,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.post('/api/employee/Deduction', async (req, res) => {
     try {
         const { employeeCode } = req.query;
-        const { name,amount,discription} = req.body;
+        const { name,amount,description} = req.body;
      
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
         if (!employee) {
@@ -37,7 +37,7 @@ app.post('/api/employee/Deduction', async (req, res) => {
         }
       
         const newPunchHistory = await Deduction.findOneAndUpdate(
-            {name,amount,discription,employee: employee._id},
+            {name,amount,description,employee: employee._id},
    
         { new: true, upsert: true }  
     );
@@ -96,7 +96,7 @@ app.get('/api/employee/Deduction', async (req, res) => {
 app.put('/api/employee/Deduction', async (req, res) => {
     const { id } = req.query;
     const { employeeCode } = req.query;    
-    const { name, amount, description } = req.body;
+    const { name, amount, discription } = req.body;
 
     try {
         const deduction = await Deduction.findById(id);
@@ -106,7 +106,7 @@ app.put('/api/employee/Deduction', async (req, res) => {
 
         if (name) deduction.name = name;
         if (amount) deduction.amount = amount;
-        if (description) deduction.description = description;
+        if (discription) deduction.discription = discription;
 
         const updatedDeduction = await deduction.save();
         res.status(200).json({
