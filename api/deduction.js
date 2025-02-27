@@ -103,40 +103,29 @@ app.get('/api/employee/Deduction', async (req, res) => {
     }
 });
 
-// Update a deduction by ID
-app.put('/api/employee/Deduction', async (req, res) => {
-    const { id } = req.query;
-    const { employeeCode } = req.query;    
-    const { name, amount, discription } = req.body;
-
+app.delete('/api/employee/Deduction', async (req, res) => {
     try {
-        const deduction = await Deduction.findById(id);
+        const { employeeCode, id } = req.query;
+
+        if (!employeeCode || !id) {
+            return res.status(400).json({ message: 'Employee code and deduction ID are required' });
+        }
+
+        const employee = await Employee.findOne({ EmployeeCode: employeeCode });
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        const deduction = await Deduction.findOneAndDelete({ _id: id, employee: employee._id });
         if (!deduction) {
             return res.status(404).json({ message: 'Deduction not found' });
         }
 
-        if (name) deduction.name = name;
-        if (amount) deduction.amount = amount;
-        if (discription) deduction.discription = discription;
+        // Remove the deduction reference from the employee document
+        employee.deduction.pull(deduction._id);
+        await employee.save();
 
-        const updatedDeduction = await deduction.save();
-        res.status(200).json({
-            message: 'Deduction updated successfully',
-            Deduction: updatedDeduction
-        });
-    } catch (error) {
-        res.status(400).send(error);
-    }
-});
-
-// Delete a deduction by ID
-app.delete('/api/employee/Deduction', async (req, res) => {
-    try {
-        const deduction = await Deduction.findByIdAndDelete(req.params.id);
-        if (!deduction) {
-            return res.status(404).send();
-        }
-        res.status(200).send(deduction);
+        res.status(200).json({ message: 'Deduction deleted successfully', Deduction: deduction });
     } catch (error) {
         res.status(500).send(error);
     }
