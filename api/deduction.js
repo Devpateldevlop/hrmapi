@@ -116,7 +116,7 @@ app.delete('/api/employee/Deduction', async (req, res) => {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const deduction = await Deduction.findOneAndDelete({ _id: id, employee: employee._id });
+        const deduction = await Deduction.findOneAndDelete({ name: id, employee: employee._id });
         if (!deduction) {
             return res.status(404).json({ message: 'Deduction not found' });
         }
