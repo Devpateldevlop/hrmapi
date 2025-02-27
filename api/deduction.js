@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors({
     origin: '*', 
-    methods: ['GET', 'POST', 'PUT','DELETE','OPTIONS'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE' ,'OPTIONS'], 
     allowedHeaders: ['Content-Type'], 
 }));
 
@@ -133,7 +133,7 @@ app.delete('/api/employee/Deduction', async (req, res) => {
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });
