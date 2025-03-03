@@ -44,6 +44,11 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
       Remarks, 
       EmailNotificationTo, 
       Attachment, 
+      lastName,
+      firstName,
+      employeeCode,
+      stat,
+      appliedDateTime,
       employee: employee._id 
     });
     await newLeaveHistory.save();
@@ -80,7 +85,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
   }
 });
 
-app.get('/api/employee/leaveHistoryByCode', async (req, res) => {
+app.get('/api/employee/leaveHistory', async (req, res) => {
   const { employeeCode } = req.query;
 
   try {

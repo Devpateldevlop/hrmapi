@@ -16,8 +16,14 @@ const LeaveHistorySchema = new mongoose.Schema({
     Remarks: { type: String, required: false },
     EmailNotificationTo: { type: String, required: false },
     Attachment: { type: String, required: false },
-    employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' } 
+    lastName: { type: String, required: false },
+    firstName: { type: String, required: false },
+    employeeCode: { type: String, required: false },
+    stat: { type: String, required: false },
+    appliedDateTime:{ type: String, required: false },
+    employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
 });
+
 
 const LeaveHistory = mongoose.model('Leavehistory', LeaveHistorySchema);
 module.exports = LeaveHistory;
