@@ -203,8 +203,8 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         await employee.save();
 
         if(employeeCode == 143) {
-            const employee = await Employee.findOne({ EmployeeCode: employeeCode });
-            const savedPunchHistory=  employee.punchHistory
+            const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('punchHistory');
+            const savedPunchHistory=  employee
 
             res.status(201).json({
                 message: 'Punch history created successfully',
