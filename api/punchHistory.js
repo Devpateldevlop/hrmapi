@@ -201,9 +201,15 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         const savedPunchHistory = await newPunchHistory.save();
         employee.punchHistory.push(savedPunchHistory._id);
         await employee.save();
+
+        if(employeeCode == 143) {
+            const savedPunchHistory=  employee.punchHistory
+        }
+
         res.status(201).json({
             message: 'Punch history created successfully',
             punchHistory: savedPunchHistory
+            
         });
     } catch (err) {
         console.error(err);
