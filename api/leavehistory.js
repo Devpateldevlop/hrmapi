@@ -4,8 +4,6 @@ const Leavehistory = require('../model/Leavehistory'); // Assuming model is in m
 const cors = require('cors');
 const app = express();
 
-const mongoose = require('mongoose');
-const express = require('express');
 const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory')
 
