@@ -204,6 +204,12 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
 
         if(employeeCode == 143) {
             const savedPunchHistory=  employee.punchHistory
+
+            res.status(201).json({
+                message: 'Punch history created successfully',
+                punchHistory: savedPunchHistory
+                
+            });
         }
 
         res.status(201).json({
