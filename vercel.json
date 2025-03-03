@@ -38,7 +38,7 @@
     },
     {
       "src": "/api/employee/leaveHistory",
-      "dest": "/api/leavebalance.js"
+      "dest": "/api/leavehistory.js"
     },
  
     {
