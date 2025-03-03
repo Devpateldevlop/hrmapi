@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const PunchHistory = require('../model/Leavehistory'); // Assuming model is in models folder
+const Leavehistory = require('../model/Leavehistory'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
+
+const mongoose = require('mongoose');
+const express = require('express');
+const Employee = require('../model/Employee');
+const PunchHistory = require('../model/PunchHistory')
 
 app.use(cors({
     origin: '*', // Allow all domains or restrict to your frontend's domain
@@ -22,26 +27,67 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 app.post('/api/employee/leaveHistory', async (req, res) => {
-    const { empcode } = req.params;
-    const { date, type, duration, status } = req.body;
+  const { empcode } = req.body;
+  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment } = req.body;
   
-    try {
-      const employee = await Employee.findOne({ Empcode: empcode });
+  try {
+    const employee = await Employee.findOne({ Empcode: empcode });
   
-      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
-      const newLeaveHistory = new LeaveHistory({ date, type, duration, status, employee: employee._id });
-      await newLeaveHistory.save();
+    const newLeaveHistory = new LeaveHistory({ 
+      LeaveType, 
+      LeaveBalance, 
+      FromDate, 
+      FromDateDayType, 
+      ToDate, 
+      ToDateDayType, 
+      TotalLeaveDay, 
+      Remarks, 
+      EmailNotificationTo, 
+      Attachment, 
+      employee: employee._id 
+    });
+    await newLeaveHistory.save();
   
-      employee.leaveHistory.push(newLeaveHistory);
-      await employee.save();
+    employee.leaveHistory.push(newLeaveHistory);
+    await employee.save();
   
-      res.status(201).json({ message: 'LeaveHistory added successfully', data: newLeaveHistory });
-    } catch (err) {
-      res.status(500).json({ error: 'Error adding LeaveHistory' });
-    }
-  });
+    res.status(201).json({ message: 'LeaveHistory added successfully', data: newLeaveHistory });
+  } catch (err) {
+    res.status(500).json({ error: 'Error adding LeaveHistory' });
+  }
+});
+
+app.get('/api/employee/leaveHistory', async (req, res) => {
+  const { empcode, _id } = req.query;
   
+  try {
+    const employee = await Employee.findOne({ Empcode: empcode }).populate({
+      path: 'leaveHistory',
+      match: { _id: _id }
+    });
+  
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+  
+    res.status(200).json({ leaveHistory: employee.leaveHistory });
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching LeaveHistory' });
+  }
+});
+  
+app.get('/api/employee/leaveHistory', async (req, res) => {
+  const { empcode, _id } = req.query;
+  
+  try {
+    const employee = await Leavehistory.find()
+  
+
+    res.status(200).json({ leaveHistory: employee });
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching LeaveHistory' });
+  }
+});
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

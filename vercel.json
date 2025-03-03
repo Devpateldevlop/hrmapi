@@ -37,7 +37,7 @@
       "dest": "/api/payslip.js"
     },
     {
-      "src": "/api/employee/:empcode/leavehistory",
+      "src": "/api/employee/leaveHistory",
       "dest": "/api/leavebalance.js"
     },
  
