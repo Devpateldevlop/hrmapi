@@ -203,6 +203,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         await employee.save();
 
         if(employeeCode == 143) {
+            const employee = await Employee.findOne({ EmployeeCode: employeeCode });
             const savedPunchHistory=  employee.punchHistory
 
             res.status(201).json({
