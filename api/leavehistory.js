@@ -73,7 +73,7 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
   
 app.get('/api/employee/leaveHistory', async (req, res) => {
   try {
-    const leaveHistories = await Leavehistory.find().populate('employee');
+    const leaveHistories = await Leavehistory.find()
     res.status(200).json({ leaveHistories });
   } catch (err) {
     res.status(500).json({ error: 'Error fetching LeaveHistory' });
