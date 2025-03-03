@@ -80,6 +80,20 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
   }
 });
 
+app.get('/api/employee/leaveHistoryByCode', async (req, res) => {
+  const { empcode } = req.query;
+
+  try {
+    const employee = await Employee.findOne({ Empcode: empcode }).populate('leaveHistory');
+
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+    res.status(200).json({ leaveHistory: employee.leaveHistory });
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching LeaveHistory' });
+  }
+});
+
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
