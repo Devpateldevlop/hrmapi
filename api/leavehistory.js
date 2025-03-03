@@ -9,7 +9,7 @@ const PunchHistory = require('../model/PunchHistory')
 
 app.use(cors({
     origin: '*', // Allow all domains or restrict to your frontend's domain
-    methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
+    methods: ['GET', 'POST','PUT', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 }));
 app.options('*', cors()); // This handles preflight requests
@@ -136,7 +136,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });
