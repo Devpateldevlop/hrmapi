@@ -35,7 +35,7 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
   
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
-    const newLeaveHistory = new LeaveHistory({ 
+    const newLeaveHistory = new Leavehistory({ 
       LeaveType, 
       LeaveBalance, 
       FromDate, 
@@ -60,13 +60,10 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
 });
 
 app.get('/api/employee/leaveHistory', async (req, res) => {
-  const { empcode, _id } = req.query;
+  const { empcode} = req.query;
   
   try {
-    const employee = await Employee.findOne({ Empcode: empcode }).populate({
-      path: 'leaveHistory',
-      match: { _id: _id }
-    });
+    const employee = await Employee.findOne({ Empcode: empcode }).populate({'leaveHistory'});
   
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
@@ -77,7 +74,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
 });
   
 app.get('/api/employee/leaveHistory', async (req, res) => {
-  const { empcode, _id } = req.query;
+  // const { empcode, _id } = req.query;
   
   try {
     const employee = await Leavehistory.find()
