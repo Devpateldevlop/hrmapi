@@ -62,7 +62,42 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
   }
 });
 
-// app.get('/api/employee/leaveHistory', async (req, res) => {
+app.put('/api/employee/leaveHistory', async (req, res) => {
+  const { id, empCode } = req.query;
+  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment, lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
+
+  try {
+    const employee = await Employee.findOne({ EmployeeCode: empCode });
+
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+    const leaveHistory = await Leavehistory.findById(id);
+
+    if (!leaveHistory) return res.status(404).json({ error: 'LeaveHistory not found' });
+
+    leaveHistory.LeaveType = LeaveType;
+    leaveHistory.LeaveBalance = LeaveBalance;
+    leaveHistory.FromDate = FromDate;
+    leaveHistory.FromDateDayType = FromDateDayType;
+    leaveHistory.ToDate = ToDate;
+    leaveHistory.ToDateDayType = ToDateDayType;
+    leaveHistory.TotalLeaveDay = TotalLeaveDay;
+    leaveHistory.Remarks = Remarks;
+    leaveHistory.EmailNotificationTo = EmailNotificationTo;
+    leaveHistory.Attachment = Attachment;
+    leaveHistory.lastName = lastName;
+    leaveHistory.firstName = firstName;
+    leaveHistory.employeecode = employeecode;
+    leaveHistory.stat = stat;
+    leaveHistory.appliedDateTime = appliedDateTime;
+
+    await leaveHistory.save();
+
+    res.status(200).json({ message: 'LeaveHistory updated successfully', data: leaveHistory });
+  } catch (err) {
+    res.status(500).json({ error: 'Error updating LeaveHistory' });
+  }
+});
 //   const { empcode} = req.query;
   
 //   try {
