@@ -25,11 +25,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
 app.post('/api/employee/leaveHistory', async (req, res) => {
-  const { employeeCode } = req.query;
-  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment } = req.body;
+  const { empCode } = req.query;
+  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment,   lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
   
   try {
-    const employee = await Employee.findOne({ EmployeeCode: employeeCode });
+    const employee = await Employee.findOne({ EmployeeCode: empCode});
   
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
@@ -46,7 +46,7 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
       Attachment, 
       lastName,
       firstName,
-      employeeCode,
+      employeecode,
       stat,
       appliedDateTime,
       employee: employee._id 
