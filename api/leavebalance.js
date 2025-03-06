@@ -25,7 +25,7 @@ app.get('/api/employee/leaveBalance', async (req, res) => {
 
   });
 app.post('/api/employee/leaveBalance', async (req, res) => {
-    const { empcode } = req.params;
+    const { empcode } = req.query;
     const { type, days } = req.body;
   
     try {
