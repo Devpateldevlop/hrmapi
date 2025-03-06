@@ -50,7 +50,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { type, days } = req.body;
 
     try {
-      const employee = await Leavebalance.findOne({ Empcode: empcode });
+      const employee = await Leavebalance.findOne({ EmployeeCode: parseInt(empcode) });
 
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
@@ -72,7 +72,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { empcode, id } = req.query;
 
     try {
-      const employee = await Leavebalance.findOne({ Empcode: empcode });
+      const employee = await Leavebalance.findOne({ EmployeeCode: parseInt(empcode) });
 
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
