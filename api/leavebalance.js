@@ -29,11 +29,11 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { type, days } = req.body;
   
     try {
-      const employee = await Employee.findOne({ EmployeeCode: empcode });
+      const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
-      const newLeaveBalance = new LeaveBalance({ type, days, employee: employee._id });
+      const newLeaveBalance = new Leavebalance({ type, days, employee: employee._id });
       await newLeaveBalance.save();
   
       employee.leaveBalance.push(newLeaveBalance);
