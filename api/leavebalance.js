@@ -91,7 +91,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     }
   });
 
-  appdelete('/api/employee/leaveBalance', async (req, res) => {
+  app.delete('/api/employee/leaveBalance', async (req, res) => {
     const { empcode, type } = req.query;
 
     try {
