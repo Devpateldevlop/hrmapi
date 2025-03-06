@@ -91,15 +91,15 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     }
   });
 
-  app.delete('/api/employee/leaveBalance', async (req, res) => {
-    const { empcode, id } = req.query;
+  appdelete('/api/employee/leaveBalance', async (req, res) => {
+    const { empcode, type } = req.query;
 
     try {
       const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
 
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
-      const leaveBalance = await Leavebalance.findByIdAndDelete(id);
+      const leaveBalance = await Leavebalance.findOneAndDelete(type); 
       if (!leaveBalance) return res.status(404).json({ error: 'LeaveBalance not found' });
 
       res.status(200).json({ message: 'LeaveBalance deleted successfully' });

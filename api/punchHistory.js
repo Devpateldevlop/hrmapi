@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory'); 
+const Leavehistory = require('../model/Leavehistory'); 
 const cors = require('cors');
 const calendar = require('../model/calendar');
 const axios = require('axios');
@@ -131,7 +132,23 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                     }
             }
         });
+        const lh = await Employee.findOne({ EmployeeCode: employeeCode }).populate('leaveHistory');
 
+        lh.leaveHistory.forEach(elementq => {
+            if (elementq.LeaveType != "Leave Without Pay" && elementq.stat == "Approved") {
+                if(new Date().getMonth() == new Date(elementq.FromDate).getMonth() && new Date().getFullYear() == new Date(elementq.FromDate).getFullYear()){
+                    // arra.push(elementq);
+                    const getDaysArray = (start, end) => {
+                        for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
+                            arr.push(new Date(dt));
+                        }
+                        return arr;
+                    };
+                    const daysBetween = getDaysArray(new Date(elementq.FromDate), new Date(elementq.ToDate));
+                }
+            }
+            
+        })
 
         var salary = employee.profile.salary 
         const daysInMonth = new Date(year, new Date().getMonth() + 1, 0).getDate();
@@ -140,7 +157,7 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
         // console.log(daysInMonth)
 
 
-        
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err });
