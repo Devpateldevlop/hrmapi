@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const Employee = require('../model/Employee');
 const PunchHistory = require('../model/PunchHistory'); 
-const Leavehistory = require('../model/Leavehistory'); 
+// const Leavehistory = require('../model/Leavehistory'); 
 const cors = require('cors');
 const calendar = require('../model/calendar');
 const axios = require('axios');
@@ -132,7 +132,7 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                     }
             }
         });
-        const lh = await Employee.findOne({ EmployeeCode: employeeCode }).populate('leaveHistory');
+        // const lh = await Employee.findOne({ EmployeeCode: employeeCode }).populate('leaveHistory');
 
         lh.leaveHistory.forEach(elementq => {
             if (elementq.LeaveType != "Leave Without Pay" && elementq.stat == "Approved") {
