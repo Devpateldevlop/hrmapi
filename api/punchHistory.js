@@ -139,6 +139,8 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
         const workedSalary = arra.length * dailySalary;
         // console.log(daysInMonth)
 
+
+        
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err });

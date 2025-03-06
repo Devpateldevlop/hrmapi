@@ -27,7 +27,27 @@ app.get('/api/employee/leaveBalance', async (req, res) => {
 app.post('/api/employee/leaveBalance', async (req, res) => {
     const { empcode } = req.query;
     const { type, days } = req.body;
+    var name=type;
+    const leaveBal = await Leavebalance.findOne({type:name});
+    if(leaveBal){
+      try {
+        const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
+        if (!employee) return res.status(404).json({ error: 'Employee not found' });
+  
+        const leaveBal = await Leavebalance.findById(id);
+        if (!leaveBal) return res.status(404).json({ error: 'LeaveBalance not found' });
+  
+        leaveBal.type = type;
+        leaveBal.days = days;
+  
+        const leaveBalance1= await leaveBal.save();
+  
+        res.status(200).json({ message: 'LeaveBalance updated successfully', data: leaveBalance1 });
+      } catch (err) {
+        res.status(500).json({ error: 'Error updating LeaveBalance' });
+      }
+    }
     try {
       const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
