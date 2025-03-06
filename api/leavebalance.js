@@ -47,7 +47,9 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
       } catch (err) {
         res.status(500).json({ error: 'Error updating LeaveBalance' });
       }
-    }
+      
+    } 
+    else{
     try {
       const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
@@ -63,6 +65,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     } catch (err) {
       res.status(500).json({ error: 'Error adding LeaveBalance' });
     }
+  }
   });
   
   app.put('/api/employee/leaveBalance', async (req, res) => {
