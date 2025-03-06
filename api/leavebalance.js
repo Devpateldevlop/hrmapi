@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const Employee = require('../model/Employee');
 const Leavebalance = require('../model/Leavebalance'); // Assuming model is in models folder
 const cors = require('cors');
 const app = express();
@@ -28,7 +29,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { type, days } = req.body;
   
     try {
-      const employee = await Leavebalance.findOne({ Empcode: empcode });
+      const employee = await Employee.findOne({ Empcode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
