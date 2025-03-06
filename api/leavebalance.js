@@ -28,14 +28,14 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { empcode } = req.query;
     const { type, days } = req.body;
     var name=type;
-    const leaveBal = await Leavebalance.findOne({type:name});
-    if(leaveBal){
+    const leaveBal1 = await Leavebalance.findOne({type:name});
+    if(leaveBal1){
       try {
         const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
         if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
-        const leaveBal = await Leavebalance.findById(id);
+        const leaveBal = await Leavebalance.findOne({type:name});
         if (!leaveBal) return res.status(404).json({ error: 'LeaveBalance not found' });
   
         leaveBal.type = type;
@@ -69,7 +69,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
   });
   
   app.put('/api/employee/leaveBalance', async (req, res) => {
-    const { empcode, id } = req.query;
+    const { empcode} = req.query;
     const { type, days } = req.body;
 
     try {
