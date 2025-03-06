@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.get('/api/employee//leaveBalance', async (req, res) => {
+app.get('/api/employee/leaveBalance', async (req, res) => {
     try {
         const punchHistories = await Leavebalance.find();
         res.status(200).json(punchHistories); // Send retrieved data back
