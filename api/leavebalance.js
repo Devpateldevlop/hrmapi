@@ -6,15 +6,15 @@ const app = express();
 
 app.use(cors({
     origin: '*', // Allow all domains or restrict to your frontend's domain
-    methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type'], // Allowed headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type'], // Allow ed headers
 }));
 app.options('*', cors()); // This handles preflight requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.get('/api/employee/:empcode/leaveBalance', async (req, res) => {
+app.get('/api/employee//leaveBalance', async (req, res) => {
     try {
         const punchHistories = await Leavebalance.find();
         res.status(200).json(punchHistories); // Send retrieved data back
@@ -23,16 +23,16 @@ app.get('/api/employee/:empcode/leaveBalance', async (req, res) => {
     }
 
   });
-app.post('/api/employee/:empcode/leaveBalance', async (req, res) => {
+app.post('/api/employee/leaveBalance', async (req, res) => {
     const { empcode } = req.params;
-    const { name, value } = req.body;
+    const { type, days } = req.body;
   
     try {
       const employee = await Leavebalance.findOne({ Empcode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
-      const newLeaveBalance = new LeaveBalance({ name, value, employee: employee._id });
+      const newLeaveBalance = new LeaveBalance({ type, days, employee: employee._id });
       await newLeaveBalance.save();
   
       employee.leaveBalance.push(newLeaveBalance);
@@ -44,6 +44,48 @@ app.post('/api/employee/:empcode/leaveBalance', async (req, res) => {
     }
   });
   
+  app.put('/api/employee/leaveBalance', async (req, res) => {
+    const { empcode, id } = req.query;
+    const { type, days } = req.body;
+
+    try {
+      const employee = await Leavebalance.findOne({ Empcode: empcode });
+
+      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+      const leaveBalance = employee.leaveBalance.id(id);
+      if (!leaveBalance) return res.status(404).json({ error: 'LeaveBalance not found' });
+
+      leaveBalance.type = type;
+      leaveBalance.days = days;
+
+      await employee.save();
+
+      res.status(200).json({ message: 'LeaveBalance updated successfully', data: leaveBalance });
+    } catch (err) {
+      res.status(500).json({ error: 'Error updating LeaveBalance' });
+    }
+  });
+
+  app.delete('/api/employee/leaveBalance', async (req, res) => {
+    const { empcode, id } = req.query;
+
+    try {
+      const employee = await Leavebalance.findOne({ Empcode: empcode });
+
+      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+      const leaveBalance = employee.leaveBalance.id(id);
+      if (!leaveBalance) return res.status(404).json({ error: 'LeaveBalance not found' });
+
+      leaveBalance.remove();
+      await employee.save();
+
+      res.status(200).json({ message: 'LeaveBalance deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ error: 'Error deleting LeaveBalance' });
+    }
+  });
 
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -54,7 +96,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });

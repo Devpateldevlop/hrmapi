@@ -88,7 +88,7 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
           
           const year = new Date().getFullYear();
           const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
-          console.log(sundaysAndSecondFourthSaturdays);
+        //   console.log(sundaysAndSecondFourthSaturdays);
           
           sundaysAndSecondFourthSaturdays.forEach(element => {
           element.sundays.forEach(element1 => {
@@ -132,10 +132,12 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
             }
         });
 
+
         var salary = employee.profile.salary 
-        const dailySalary = salary / 30
+        const daysInMonth = new Date(year, new Date().getMonth() + 1, 0).getDate();
+        const dailySalary = salary / daysInMonth
         const workedSalary = arra.length * dailySalary;
-        console.log(workedSalary)
+        // console.log(daysInMonth)
 
     } catch (err) {
         console.error(err);
@@ -209,7 +211,6 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
             res.status(201).json({
                 message: 'Punch history created successfully',
                 punchHistory: savedPunchHistory
-                
             });
         }
 
