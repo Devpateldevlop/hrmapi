@@ -16,11 +16,17 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.get('/api/employee/leaveBalance', async (req, res) => {
+    const { empcode } = req.query;
+
     try {
-        const punchHistories = await Leavebalance.find();
-        res.status(200).json(punchHistories); // Send retrieved data back
+      const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
+
+      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+      const leaveBalances = await Leavebalance.find({ employee: employee._id });
+      res.status(200).json(leaveBalances); // Send retrieved data back
     } catch (err) {
-        res.status(500).json({ error: 'Error retrieving punch history' });
+      res.status(500).json({ error: 'Error retrieving leave balances' });
     }
 
   });
