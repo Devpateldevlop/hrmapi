@@ -29,7 +29,7 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { type, days } = req.body;
   
     try {
-      const employee = await Employee.findOne({ Empcode: empcode });
+      const employee = await Employee.findOne({ EmployeeCode: empcode });
   
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
