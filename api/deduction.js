@@ -90,6 +90,8 @@ app.get('/api/employee/Deduction', async (req, res) => {
     }
 });
 
+
+
 // Get a deduction by ID
 app.get('/api/employee/Deduction', async (req, res) => {
     try {
@@ -133,7 +135,7 @@ app.delete('/api/employee/Deduction', async (req, res) => {
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', ' GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });
