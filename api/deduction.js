@@ -93,17 +93,17 @@ app.get('/api/employee/Deduction', async (req, res) => {
 
 
 // Get a deduction by ID
-app.get('/api/employee/Deduction', async (req, res) => {
-    try {
-        const deduction = await Deduction.findById(req.params.id);
-        if (!deduction) {
-            return res.status(404).send();
-        }
-        res.status(200).send(deduction);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
+// app.get('/api/employee/Deduction', async (req, res) => {
+//     try {
+//         const deduction = await Deduction.findById(req.params.id);
+//         if (!deduction) {
+//             return res.status(404).send();
+//         }
+//         res.status(200).send(deduction);
+//     } catch (error) {
+//         res.status(500).send(error);
+//     }
+// });
 
 app.delete('/api/employee/Deduction', async (req, res) => {
     try {
