@@ -34,13 +34,13 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     const { empcode } = req.query;
     const { type, days } = req.body;
     var name=type;
-    const leaveBal1 = await Leavebalance.findOne({type:name});
+    const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+    const leaveBal1 = await Leavebalance.findone({ employee: employee._id ,type:name});
+
+    // const leaveBal1 = await Leavebalance.findOne({type:name});
     if(leaveBal1){
       try {
-        const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
-  
-        if (!employee) return res.status(404).json({ error: 'Employee not found' });
-  
         const leaveBal = await Leavebalance.findOne({type:name});
         if (!leaveBal) return res.status(404).json({ error: 'LeaveBalance not found' });
   
@@ -57,9 +57,9 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
     } 
     else{
     try {
-      const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
+      // const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
   
-      if (!employee) return res.status(404).json({ error: 'Employee not found' });
+      // if (!employee) return res.status(404).json({ error: 'Employee not found' });
   
       const newLeaveBalance = new Leavebalance({ type, days, employee: employee._id });
       await newLeaveBalance.save();
