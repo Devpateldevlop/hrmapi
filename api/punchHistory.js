@@ -145,9 +145,10 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
                         return arr;
                     };
                     const daysBetween = getDaysArray(new Date(elementq.FromDate), new Date(elementq.ToDate));
-                }
+                    console.log(daysBetween)    
+
+                }   
             }
-            
         })
 
         var salary = employee.profile.salary 
