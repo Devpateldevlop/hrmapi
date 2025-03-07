@@ -73,7 +73,7 @@ app.post('/api/employee/Deduction', async (req, res) => {
 app.get('/api/employee/Deduction', async (req, res) => {
     try {
 
-        const employeeCode = req.query.employeeCode;
+        const {employeeCode} = req.query
         if (!employeeCode) {
             return res.status(400).json({ message: 'Employee code is required' });
         }
