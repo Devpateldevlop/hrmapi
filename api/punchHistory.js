@@ -283,6 +283,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         employee.masterholiday.forEach(element => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
+
                     res.statusMessage = "Selcted Date Is Non-Working Day";
                 res.status(500).send('Selcted Date Is Non-Working Day' );
                 throw new Error('Something went wrong');
@@ -424,8 +425,10 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         employee.masterholiday.forEach(element => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
+                res.statusMessage = 'Selcted Date Is Non-Working Day';
                 res.status(500).send({ message: 'Selcted Date Is Non-Working Day' });
-            }else if(element.type == "HoliDay"){
+            } else if(element.type == "HoliDay"){
+                res.statusMessage = 'Selcted Date Is HoliDay';
                 res.status(500).send({ message: 'Selcted Date Is HoliDay' });
             }
             }
