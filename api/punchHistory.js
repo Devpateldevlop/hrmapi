@@ -424,12 +424,14 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         });
         employee.masterholiday.forEach(element => {
             if(element.date === date){
+                res.setHeader('X-Message', 'Selected Date Is Non-Working Day');
                 if(element.type == "nonWorking"){
                 res.statusMessage = 'Selcted Date Is Non-Working Day';
-                res.status(500).send({ message: 'Selcted Date Is Non-Working Day' });
+                res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
             } else if(element.type == "HoliDay"){
+                res.setHeader('X-Message', 'Selected Date Is HoliDay');
                 res.statusMessage = 'Selcted Date Is HoliDay';
-                res.status(500).send({ message: 'Selcted Date Is HoliDay' });
+                res.status(500).json({ message: 'Selcted Date Is HoliDay' });
             }
             }
         });
