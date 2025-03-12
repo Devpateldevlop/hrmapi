@@ -283,9 +283,9 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         employee.masterholiday.forEach(element => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
-                res.status(300).json({ message: 'Selcted Date Is nonWorking' });
+                res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
             }else if(element.type == "HoliDay"){
-                res.status(300).json({ message: 'Selcted Date Is HoliDay' });
+                res.status(500).json({ message: 'Selcted Date Is HoliDay' });
             }
             }
         });
@@ -345,7 +345,87 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
+        employee.masterholiday = await calendar.find();
         
+        const getSundaysAndSecondFourthSaturdays = (year) => {
+            const result = [];
+          
+            for (let month = 0; month < 12; month++) {
+              const obj = {
+                month: (month + 1).toString(),  // Month as a string '1' to '12'
+                sundays: [],
+                evenSaturdays: []
+              };
+          
+              const daysInMonth = new Date(year, month + 1, 0).getDate();
+          
+              let saturdayCount = 0; // To track the number of Saturdays in the month
+          
+              for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay();
+          
+                // Check for Sundays (day 0)
+                if (dayOfWeek === 0) {
+                  const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                  obj.sundays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
+                }
+          
+                // Check for Saturdays (day 6)
+                if (dayOfWeek === 6) {
+                  saturdayCount++; // Increment Saturday count
+                  
+                  // If it's the 2nd Saturday, push it
+                  if (saturdayCount === 2) {
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                    obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
+                  }
+          
+                  // If it's the 4th Saturday, push it
+                  if (saturdayCount === 4) {
+                    const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
+                    obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
+                  }
+                }
+              }
+          
+              result.push(obj);
+            }
+          
+            return result;
+          };
+          
+          const year = new Date().getFullYear();
+          const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
+        //   console.log(sundaysAndSecondFourthSaturdays);
+          
+          sundaysAndSecondFourthSaturdays.forEach(element => {
+          element.sundays.forEach(element1 => {
+            var objsatsun={
+                type: "nonWorking",
+                name: "non-Working Day",
+                date: element1.date
+            }
+            employee.masterholiday.push(objsatsun);
+          });
+          element.evenSaturdays.forEach(element1 => {
+            var objsatsun={
+                type: "nonWorking",
+                name: "non-Working Day",
+                date: element1.date
+            }
+            employee.masterholiday.push(objsatsun);
+          });
+        });
+        employee.masterholiday.forEach(element => {
+            if(element.date === date){
+                if(element.type == "nonWorking"){
+                res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
+            }else if(element.type == "HoliDay"){
+                res.status(500).json({ message: 'Selcted Date Is HoliDay' });
+            }
+            }
+        });
         // Find the punch history by its ID and update it
         const punchHistory = await PunchHistory.findById(punchHistoryId);
 
