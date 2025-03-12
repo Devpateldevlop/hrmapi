@@ -284,8 +284,10 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
                 res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
+                return
             }else if(element.type == "HoliDay"){
                 res.status(500).json({ message: 'Selcted Date Is HoliDay' });
+                return
             }
             }
         });
