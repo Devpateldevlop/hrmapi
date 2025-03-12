@@ -283,10 +283,10 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         employee.masterholiday.forEach(element => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
-                res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
+                res.status(500).json({ error: 'Selcted Date Is Non-Working Day' });
                 return
             }else if(element.type == "HoliDay"){
-                res.status(500).json({ message: 'Selcted Date Is HoliDay' });
+                res.status(500).json({ error: 'Selcted Date Is HoliDay' });
             }
             }
         });
@@ -324,7 +324,7 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error', error: err });
+        res.status(500).json({ error: 'Server error', error: err });
     }
 });
 
@@ -421,9 +421,9 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         employee.masterholiday.forEach(element => {
             if(element.date === date){
                 if(element.type == "nonWorking"){
-                res.status(500).json({ message: 'Selcted Date Is Non-Working Day' });
+                res.status(500).json({ error: 'Selcted Date Is Non-Working Day' });
             }else if(element.type == "HoliDay"){
-                res.status(500).json({ message: 'Selcted Date Is HoliDay' });
+                res.status(500).json({ error: 'Selcted Date Is HoliDay' });
             }
             }
         });
@@ -449,7 +449,7 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
          
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error', error: err });
+        res.status(500).json({ error: 'Server error', error: err });
     }
 });
 
