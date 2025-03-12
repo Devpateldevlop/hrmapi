@@ -204,6 +204,16 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
         const { employeeCode } = req.query;
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
      
+        employee.masterholiday.forEach(element => {
+            if(element.date == date){
+                if(element.type == "nonWorking"){
+                res.status(300).json({ message: 'Selcted Date Is nonWorking' });
+            }else if(element.type == "HoliDay"){
+                res.status(300).json({ message: 'Selcted Date Is HoliDay' });
+            }
+            }
+        });
+
         const employee = await Employee.findOne({ EmployeeCode: employeeCode });
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });

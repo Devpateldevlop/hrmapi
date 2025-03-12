@@ -91,7 +91,6 @@ app.get('/api/employee/Deduction', async (req, res) => {
 });
 
 
-
 // Get a deduction by ID
 // app.get('/api/employee/Deduction', async (req, res) => {
 //     try {
