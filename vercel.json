@@ -6,13 +6,9 @@
       "use": "@vercel/node"
     },
     {
-      "src": "./server.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "pages/api/servicework/service.js",
       "use": "@vercel/node"
-    }
+    } 
   ],
   "routes": [
     {
@@ -53,10 +49,6 @@
     {
       "src": "/api/calendar",
       "dest": "/api/calendar.js"
-    },
-    {
-      "src": "/api/regularization/:id",
-      "dest": "/api/regularizations.js"
     }
 
   ]
