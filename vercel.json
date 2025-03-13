@@ -49,6 +49,10 @@
     {
       "src": "/api/calendar",
       "dest": "/api/calendar.js"
+    },
+    {
+      "src": "/api/regulatization",
+      "dest": "/api/regulatizations.js"
     }
 
   ]

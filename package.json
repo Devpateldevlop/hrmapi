@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "node server.js",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@vercel/node": "^2.10.3",
