@@ -6,11 +6,11 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: '*', // Allow all domains or restrict to your frontend's domain
-    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type'], // Allow ed headers
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], 
+    allowedHeaders: ['Content-Type'], 
 }));
-app.options('*', cors()); // This handles preflight requests
+app.options('*', cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 mongoose.connect(process.env.MONGODB_URI, {
@@ -19,12 +19,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
-app.options('*', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.status(200).end();
-});
+
 app.get("/api/regularization/:id",(req,res)=>{
     var {id} = req.params.id
     res.send("welcome"+id);
