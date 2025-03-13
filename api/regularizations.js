@@ -25,7 +25,7 @@ app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });
-app.get("/api/regulatization",(req,res)=>{
+app.get("/api/regularization",(req,res)=>{
     res.send("welcome");
 })
 const PORT = process.env.PORT || 3000;
