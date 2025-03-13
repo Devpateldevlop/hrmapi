@@ -26,7 +26,7 @@ app.options('*', (req, res) => {
     res.status(200).end();
 });
 app.get("/api/regularization/:id",(req,res)=>{
-    var {id} = req.params
+    var {id} = req.params.id
     res.send("welcome"+id);
 })
 const PORT = process.env.PORT || 3000;
