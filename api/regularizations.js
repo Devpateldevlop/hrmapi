@@ -25,7 +25,7 @@ app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
 });
-app.get("/api/regularization:id",(req,res)=>{
+app.get("/api/regularization/:id",(req,res)=>{
     var {id} = req.params
     res.send("welcome"+id);
 })
