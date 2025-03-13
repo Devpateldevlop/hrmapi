@@ -55,7 +55,7 @@
       "dest": "/api/calendar.js"
     },
     {
-      "src": "/api/regularization",
+      "src": "/api/regularization/:id",
       "dest": "/api/regularizations.js"
     }
 
