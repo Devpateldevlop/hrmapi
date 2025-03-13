@@ -20,9 +20,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB Connected...'))
 .catch((err) => console.log('MongoDB connection error: ' + err));
 
-app.get("/api/regularization/:id",(req,res)=>{
-    var {id} = req.params.id
-    res.send("welcome"+id);
+app.get("/api/regularization",(req,res)=>{
+    
+    res.send("welcome");
 })
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
