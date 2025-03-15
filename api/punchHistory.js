@@ -444,7 +444,7 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
             return res.status(404).json({ error: 'Punch history not found' });
         }
 
-        if (date) punchHistory.date = date1;
+        if (date1) punchHistory.date = date1;
         if (punchIn) punchHistory.punchIn = punchIn;
         if (punchOut) punchHistory.punchOut = punchOut;
         if (Inaddress) punchHistory.Inaddress = Inaddress;
