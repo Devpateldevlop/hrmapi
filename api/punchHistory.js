@@ -332,8 +332,10 @@ app.post('/api/employee/PunchHistory', async (req, res) => {
 
 app.put('/api/employee/PunchHistory', async (req, res) => {
     try {
+      const { employeeCode } = req.query;    
+      if(req.query.punchHistoryId){
         const { punchHistoryId } = req.query; 
-        const { employeeCode } = req.query;    
+      }
 
         const { date, punchIn, punchOut, Inaddress, Outaddress } = req.body;
 
