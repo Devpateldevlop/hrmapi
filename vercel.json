@@ -8,7 +8,7 @@
     {
       "src": "pages/api/servicework/service.js",
       "use": "@vercel/node"
-    }
+    } 
   ],
   "routes": [
     {

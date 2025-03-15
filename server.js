@@ -21,8 +21,11 @@ app.get('/PunchHistory', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
- 
-const PORT = process.env.PORT || 3000;
+ app.get("/api/regularization/:id",(req,res)=>{
+    let id = req.params.id
+    res.send("welcome to dev"+id);
+ })
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
 
