@@ -431,11 +431,12 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
         });
         // Find the punch history by its ID and update it
         // const punchHistory = await PunchHistory.findById(punchHistoryId);
+        const date1=date;
         let punchHistory;
         if (punchHistoryId) {
           punchHistory = await PunchHistory.findById(punchHistoryId);
         } else {
-          punchHistory = await PunchHistory.findOne({ employee: employee._id, date: date });
+          punchHistory = await PunchHistory.findOne({ employee: employee._id, date: date1 });
         }
         // const punchHistory = await PunchHistory.findOne({ _id: punchHistoryId, date: date });
 
