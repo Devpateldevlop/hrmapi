@@ -430,7 +430,14 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
             }
         });
         // Find the punch history by its ID and update it
-        const punchHistory = await PunchHistory.findById(punchHistoryId);
+        // const punchHistory = await PunchHistory.findById(punchHistoryId);
+        let punchHistory;
+        if (punchHistoryId) {
+          punchHistory = await PunchHistory.findById(punchHistoryId);
+        } else {
+          punchHistory = await PunchHistory.findOne({ employee: employee._id, date: date });
+        }
+        // const punchHistory = await PunchHistory.findOne({ _id: punchHistoryId, date: date });
 
         if (!punchHistory) {
             return res.status(404).json({ error: 'Punch history not found' });
