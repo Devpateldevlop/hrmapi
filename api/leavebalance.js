@@ -17,7 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/api/employee/leaveBalance', async (req, res) => {
     const { empcode } = req.query;
-
+    const { type } = req.query;
+    if(!type){
     try {
       const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
 
@@ -28,6 +29,22 @@ app.get('/api/employee/leaveBalance', async (req, res) => {
     } catch (err) {
       res.status(500).json({ error: 'Error retrieving leave balances' });
     }
+  }
+else{
+  try {
+    const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
+
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+
+    const leaveBalance = await Leavebalance.findOne({ employee: employee._id, type: type });
+
+    if (!leaveBalance) return res.status(404).json({ error: 'LeaveBalance not found' });
+
+    res.status(200).json(leaveBalance);
+  } catch (err) {
+    res.status(500).json({ error: 'Error retrieving leave balance' });
+  }
+}
 
   });
 app.post('/api/employee/leaveBalance', async (req, res) => {
