@@ -82,8 +82,8 @@ app.post('/api/employee/leaveBalance', async (req, res) => {
       const employee = await Employee.findOne({ EmployeeCode: parseInt(empcode) });
 
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
-
-      const leaveBal = await Leavebalance.findOne(type);
+       const type1=type;
+      const leaveBal = await Leavebalance.findOne({type:type1});
       if (!leaveBal) return res.status(404).json({ error: 'LeaveBalance not found' });
 
       leaveBal.type = type;
