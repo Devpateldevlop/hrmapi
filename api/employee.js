@@ -42,7 +42,8 @@ app.post('/api/employee', async (req, res) => {
 
       const newEmployee = new Employee({ EmployeeCode, profile });
       await newEmployee.save();
-      res.status(201).json({ message: 'Employee created successfully', data: newEmployee });
+      const allEmployees = await Employee.find();
+      res.status(201).json({ message: 'Employee created successfully', data: allEmployees });
   } catch (err) {
       console.error('Error creating employee:', err);
       res.status(500).json({ error: 'Error creating Employee' });
