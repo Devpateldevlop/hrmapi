@@ -137,7 +137,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
   const { employeeCode } = req.query;
 
   try {
-    const employee = await Employee.findOne({ Empcode: employeeCode }).populate('leaveHistory');
+    const employee = await Employee.findOne({ EmployeeCode: employeeCode }).populate('leaveHistory');
 
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
