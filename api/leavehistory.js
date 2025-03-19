@@ -134,7 +134,7 @@ app.put('/api/employee/leaveHistory', async (req, res) => {
 // });
 
 app.get('/api/employee/leaveHistory', async (req, res) => {
-  if(req.query)
+  if(Object.keys(req.query).length != 0)
   {
     const { empcode } = req.query;
     const employeecode1=parseInt(empcode);
@@ -142,7 +142,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
       const employee = await Employee.findOne({ EmployeeCode: employeecode1})
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
       const LeaveH = await  Leavehistory.findOne({employee:employee._id})// Assuming model is in models folder
-       
+      
       res.status(200).json({ leaveHistory: [LeaveH] });
     } catch (err) {
       res.status(500).json({ error: 'Error fetching LeaveHistory' });

@@ -357,36 +357,32 @@ app.put('/api/employee/PunchHistory', async (req, res) => {
           
             for (let month = 0; month < 12; month++) {
               const obj = {
-                month: (month + 1).toString(),  // Month as a string '1' to '12'
+                month: (month + 1).toString(),  
                 sundays: [],
                 evenSaturdays: []
               };
           
               const daysInMonth = new Date(year, month + 1, 0).getDate();
           
-              let saturdayCount = 0; // To track the number of Saturdays in the month
+              let saturdayCount = 0; 
           
               for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(year, month, day);
                 const dayOfWeek = date.getDay();
           
-                // Check for Sundays (day 0)
                 if (dayOfWeek === 0) {
                   const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
                   obj.sundays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
                 }
           
-                // Check for Saturdays (day 6)
                 if (dayOfWeek === 6) {
-                  saturdayCount++; // Increment Saturday count
+                  saturdayCount++; 
                   
-                  // If it's the 2nd Saturday, push it
                   if (saturdayCount === 2) {
                     const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
                     obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
                   }
           
-                  // If it's the 4th Saturday, push it
                   if (saturdayCount === 4) {
                     const formattedDate = new Date(year, month, day).toLocaleDateString('en-GB').split('/');
                     obj.evenSaturdays.push({ "date": `${formattedDate[2]}-${formattedDate[1]}-${formattedDate[0]}` });
