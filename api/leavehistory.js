@@ -65,11 +65,11 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
 });
 
 app.put('/api/employee/leaveHistory', async (req, res) => {
-  const { id, empCode } = req.query;
+  const { id, empcode } = req.query;
   const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment, lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
 
   try {
-    const employee = await Employee.findOne({ EmployeeCode: empCode });
+    const employee = await Employee.findOne({ EmployeeCode: empcode });
 
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
