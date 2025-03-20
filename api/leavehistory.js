@@ -143,7 +143,7 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
     try {
       const employee = await Employee.find({ EmployeeCode: employeecode1})
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
-      const LeaveH = await  Leavehistory.find({employee:employee._id})// Assuming model is in models folder
+      const LeaveH = await  Leavehistory.find({employee:ObjectId(employee._id) })// Assuming model is in models folder
       
       res.status(200).json({LeaveH});
     } catch (err) {
