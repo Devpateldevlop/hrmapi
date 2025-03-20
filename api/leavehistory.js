@@ -66,10 +66,10 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
 
 app.put('/api/employee/leaveHistory', async (req, res) => {
   const { id, empcode } = req.query;
-  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment, lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
+  const { LeaveType, LeaveBalance, docNo, FromDate, Email, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment, lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
 
   try {
-    const employee = await Employee.findOne({ EmployeeCode: empcode });
+    const employee = await Employee.find({ EmployeeCode: parseInt(empcode) });
 
     if (!employee) return res.status(404).json({ error: 'Employee not found' });
 
@@ -94,19 +94,7 @@ app.put('/api/employee/leaveHistory', async (req, res) => {
     if (appliedDateTime) leaveHistory.appliedDateTime = appliedDateTime;
     if (docNo) leaveHistory.docNo = docNo;
     if (Email) leaveHistory.Email = Email;
-    // leaveHistory.FromDate = FromDate;
-    // leaveHistory.FromDateDayType = FromDateDayType;
-    // leaveHistory.ToDate = ToDate;
-    // leaveHistory.ToDateDayType = ToDateDayType;
-    // leaveHistory.TotalLeaveDay = TotalLeaveDay;
-    // leaveHistory.Remarks = Remarks;
-    // leaveHistory.EmailNotificationTo = EmailNotificationTo;
-    // leaveHistory.Attachment = Attachment;
-    // leaveHistory.lastName = lastName;
-    // leaveHistory.firstName = firstName;
-    // leaveHistory.employeecode = employeecode;
-    // leaveHistory.stat = stat;
-    // leaveHistory.appliedDateTime = appliedDateTime;
+    
 
     await leaveHistory.save();
 
