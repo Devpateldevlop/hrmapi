@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.post('/api/employee/leaveHistory', async (req, res) => {
   const { empcode } = req.query;
-  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment,   lastName, firstName, employeecode, stat, appliedDateTime } = req.body;
+  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment,   lastName, firstName, employeecode, stat, appliedDateTime,docNo } = req.body;
   
   try {
     const employee = await Employee.findOne({ EmployeeCode: empcode});
@@ -49,6 +49,7 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
       employeecode,
       stat,
       appliedDateTime,
+      docNo,
       employee: employee._id 
     });
     await newLeaveHistory.save();
@@ -90,6 +91,7 @@ app.put('/api/employee/leaveHistory', async (req, res) => {
     if (employeecode) leaveHistory.employeecode = employeecode;
     if (stat) leaveHistory.stat = stat;
     if (appliedDateTime) leaveHistory.appliedDateTime = appliedDateTime;
+    if (docNo) leaveHistory.docNo = docNo;
     // leaveHistory.FromDate = FromDate;
     // leaveHistory.FromDateDayType = FromDateDayType;
     // leaveHistory.ToDate = ToDate;
@@ -139,11 +141,11 @@ app.get('/api/employee/leaveHistory', async (req, res) => {
     const { empcode } = req.query;
     const employeecode1=parseInt(empcode);
     try {
-      const employee = await Employee.findOne({ EmployeeCode: employeecode1})
+      const employee = await Employee.find({ EmployeeCode: employeecode1})
       if (!employee) return res.status(404).json({ error: 'Employee not found' });
-      const LeaveH = await  Leavehistory.findOne({employee:employee._id})// Assuming model is in models folder
+      const LeaveH = await  Leavehistory.find({employee:employee._id})// Assuming model is in models folder
       
-      res.status(200).json({ leaveHistory: [LeaveH] });
+      res.status(200).json({employee});
     } catch (err) {
       res.status(500).json({ error: 'Error fetching LeaveHistory' });
     }

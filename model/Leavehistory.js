@@ -21,6 +21,7 @@ const LeaveHistorySchema = new mongoose.Schema({
     employeecode: { type: String, required: false },
     stat: { type: String, required: false },
     appliedDateTime:{ type: String, required: false },
+    docNo: { type: String, required: false },
     employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }
 });
 
