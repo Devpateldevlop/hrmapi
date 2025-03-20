@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.post('/api/employee/leaveHistory', async (req, res) => {
   const { empcode } = req.query;
-  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment,   lastName, firstName, employeecode, stat, appliedDateTime,docNo } = req.body;
+  const { LeaveType, LeaveBalance, FromDate, FromDateDayType, ToDate, ToDateDayType, TotalLeaveDay, Remarks, EmailNotificationTo, Attachment,   lastName, firstName, employeecode, stat, appliedDateTime,docNo ,Email} = req.body;
   
   try {
     const employee = await Employee.findOne({ EmployeeCode: empcode});
@@ -50,6 +50,7 @@ app.post('/api/employee/leaveHistory', async (req, res) => {
       stat,
       appliedDateTime,
       docNo,
+      Email,
       employee: employee._id 
     });
     await newLeaveHistory.save();
@@ -92,6 +93,7 @@ app.put('/api/employee/leaveHistory', async (req, res) => {
     if (stat) leaveHistory.stat = stat;
     if (appliedDateTime) leaveHistory.appliedDateTime = appliedDateTime;
     if (docNo) leaveHistory.docNo = docNo;
+    if (Email) leaveHistory.Email = Email;
     // leaveHistory.FromDate = FromDate;
     // leaveHistory.FromDateDayType = FromDateDayType;
     // leaveHistory.ToDate = ToDate;
