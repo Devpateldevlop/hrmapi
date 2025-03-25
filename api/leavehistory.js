@@ -95,7 +95,6 @@ app.put('/api/employee/leaveHistory', async (req, res) => {
     if (docNo) leaveHistory.docNo = docNo;
     if (Email) leaveHistory.Email = Email;
     
-
     await leaveHistory.save();
 
     res.status(200).json({ message: 'LeaveHistory updated successfully', data: leaveHistory });
