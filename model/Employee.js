@@ -18,6 +18,7 @@ mongoose.connect("mongodb+srv://pdev5771:rxHFzG2xPEkkocvM@cluster0.bso1d.mongodb
 const EmployeeSchema = new mongoose.Schema({
     EmployeeCode: { type: Number, required: true },
     profile: {
+
         firstName: { type: String, required: true },
         Password:{type:String,required:true},
         lastName: { type: String, required: true },
@@ -44,7 +45,9 @@ const EmployeeSchema = new mongoose.Schema({
         PermanentAddress:{type:String},
         profileImage: { type: String },  
         Gender:{type:String},
-        MaritalStatus:{type:String}
+        MaritalStatus:{type:String},
+        isSound:{type:Boolean},
+        isVibrate:{type:Boolean},
     },
     punchHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PunchHistory' }],
     payslips: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Payslip' }],

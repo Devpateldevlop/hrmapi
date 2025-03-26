@@ -86,11 +86,21 @@ app.get('/api/employee/PunchHistory', async (req, res) => {
           
             return result;
           };
-          
-          const year = new Date().getFullYear();
-          const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
+          const emp= await Employee.findOne({EmployeeCode:employeeCode})
+          const joindate= emp.profile.DateofJoining
+          const formattedDate = new Date().toLocaleDateString('en-GB').split('/');
+          console.log(joindate.split("-")[2])
+          console.log(formattedDate[0])
+          const len  = parseInt(formattedDate[0])-parseInt(joindate.split('-')[2])
+          for(var i=0;i<len;i++)
+            { 
+              
+              const year = parseInt(joindate.split('-')[2])+1
+              const sundaysAndSecondFourthSaturdays = getSundaysAndSecondFourthSaturdays(year);
+              var sunday=sundaysAndSecondFourthSaturdays
+            }
         //   console.log(sundaysAndSecondFourthSaturdays);
-          
+          const sundaysAndSecondFourthSaturdays=sunday
           sundaysAndSecondFourthSaturdays.forEach(element => {
           element.sundays.forEach(element1 => {
             var objsatsun={
