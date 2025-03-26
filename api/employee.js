@@ -71,7 +71,7 @@ app.delete('/api/employee', async (req, res) => {
         const employee = await Employee.findOneAndDelete({ EmployeeCode: employeeCode });
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
-        }
+        } 
       const allEmployees = await Employee.find();
 
         res.status(200).json({ message: 'Employee deleted successfully',data:allEmployees });
