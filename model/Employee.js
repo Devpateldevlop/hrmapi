@@ -29,7 +29,7 @@ const EmployeeSchema = new mongoose.Schema({
         DateOfBirth:{type:String},
         PANNumber:{type:String},
         AadhaarNumber:{type:String},
-        Designation:{type:String},
+        Designation:{type:String}, 
         Department:{type:String},
         Branch:{type:String},
         Grade:{type:String},
@@ -46,6 +46,9 @@ const EmployeeSchema = new mongoose.Schema({
         profileImage: { type: String },  
         Gender:{type:String},
         MaritalStatus:{type:String},
+        Notifications:{type:String,required:false},
+        Theme:{type:String,required:false},
+        sessiontime:{type:String,required:false},
         isSound:{type:Boolean},
         isVibrate:{type:Boolean},
     },
@@ -62,5 +65,3 @@ module.exports = Employee;
 
 
 
-
- 
