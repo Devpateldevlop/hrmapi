@@ -58,10 +58,11 @@ const EmployeeSchema = new mongoose.Schema({
     leaveHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LeaveHistory' }],
     deduction: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Deduction' }],
 });
-
+         
 const Employee = mongoose.model('Employee', EmployeeSchema);
 module.exports = Employee;
 
+                           
 
 
-
+ 
